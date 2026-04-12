@@ -18,6 +18,7 @@ import { AdminRoute, ProtectedRoute } from "./service/Guard";
 import TasksPage from "./pages/tasks/TasksPage";
 import MembersPage from "./pages/members/MembersPage";
 import AddEditProjectPage from "./pages/projects/AddEditProjectPage";
+import AddEditTaskPage from "./pages/tasks/AddEditTaskPage";
 
 function App() {
   return (
@@ -43,18 +44,26 @@ function App() {
         />
 
         <Route
-          path='/create'
+          path='/projects/create'
           element={<AdminRoute element={<AddEditProjectPage />} />}
         />
 
         <Route
-          path='/update/:project_id'
+          path='/projects/update/:project_id'
           element={<AdminRoute element={<AddEditProjectPage />} />}
         />
 
         <Route
           path='/tasks'
           element={<ProtectedRoute element={<TasksPage />} />}
+        />
+        <Route
+          path='/tasks/create'
+          element={<AdminRoute element={<AddEditTaskPage />} />}
+        />
+        <Route
+          path='/tasks/update/:id'
+          element={<AdminRoute element={<AddEditTaskPage />} />}
         />
 
         {/* Tasks */}

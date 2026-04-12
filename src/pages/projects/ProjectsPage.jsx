@@ -106,7 +106,7 @@ const ProjectPage = () => {
 
           {isAdmin && (
             <button
-              onClick={() => navigate("/create")}
+              onClick={() => navigate("/projects/create")}
               className='flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-dusk-blue to-lavender-grey text-white rounded-2xl'
             >
               <CirclePlus className='w-6 h-6' />
@@ -156,7 +156,7 @@ const ProjectPage = () => {
                       <button
                         className='p-2 hover:text-green-400 hover:bg-green-400/10 rounded-lg transition-all'
                         onClick={() =>
-                          navigate(`/update/${project.project_id}`)
+                          navigate(`/projects/update/${project.project_id}`)
                         }
                       >
                         <Edit2 />

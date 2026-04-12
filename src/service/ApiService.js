@@ -316,6 +316,70 @@ export default class ApiService {
     return response.data;
   }
 
+  static async addTask(taskData) {
+    const response = await axios.post(
+      `${this.BASE_URL}/tasks/create`,
+      taskData,
+      {
+        headers: this.getHeader(),
+      },
+    );
+    return response.data;
+  }
+
+  static async updateTask(id, taskData) {
+    const response = await axios.put(
+      `${this.BASE_URL}/tasks/update`,
+      taskData,
+      {
+        headers: this.getHeader(),
+        params: { id: id },
+      },
+    );
+    return response.data;
+  }
+
+  // static async getAllTasks() {
+  //   const response = await axios.get(`${this.BASE_URL}/tasks`, {
+  //     headers: this.getHeader(),
+  //   });
+  //   return response.data;
+  // }
+
+  // static async getTotalTasks() {
+  //   const response = await axios.get(`${this.BASE_URL}/tasks/total_tasks`, {
+  //     headers: this.getHeader(),
+  //   });
+  //   return response.data;
+  // }
+
+  static async getTaskById(id) {
+    const response = await axios.get(`${this.BASE_URL}/tasks/find_by_id`, {
+      headers: this.getHeader(),
+      params: { id: id },
+    });
+    return response.data;
+  }
+
+  static async deleteTask(taskId) {
+    const response = await axios.delete(`${this.BASE_URL}/tasks/delete`, {
+      headers: this.getHeader(),
+      params: { id: taskId },
+    });
+    return response.data;
+  }
+
+  static async updateTaskStatus(taskId, status) {
+    const response = await axios.patch(
+      `${this.BASE_URL}/tasks/update_status`,
+      { taskStatus: status },
+      {
+        headers: this.getHeader(),
+        params: { id: taskId },
+      },
+    );
+    return response.data;
+  }
   /**AUTHENTICATION CHECKER */
   static clearAuth() {
     localStorage.removeItem("token");
