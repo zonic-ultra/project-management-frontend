@@ -12,10 +12,12 @@ import AboutPage from "./pages/AboutPage";
 import TermsPage from "./pages/terms/Terms";
 import DashboardPage from "./pages/DashboardPage";
 // import TasksPage from "./pages/TasksPage";
-import ProjectsPage from "./pages/ProjectsPage";
+import ProjectsPage from "./pages/projects/ProjectsPage";
 // import UsersPage from "./pages/UsersPage";
 import { AdminRoute, ProtectedRoute } from "./service/Guard";
-import TasksPage from "./pages/TasksPage";
+import TasksPage from "./pages/tasks/TasksPage";
+import MembersPage from "./pages/members/MembersPage";
+import AddEditProjectPage from "./pages/projects/AddEditProjectPage";
 
 function App() {
   return (
@@ -32,8 +34,22 @@ function App() {
           element={<AdminRoute element={<DashboardPage />} />}
         />
         <Route
+          path='/members'
+          element={<AdminRoute element={<MembersPage />} />}
+        />
+        <Route
           path='/projects'
           element={<AdminRoute element={<ProjectsPage />} />}
+        />
+
+        <Route
+          path='/create'
+          element={<AdminRoute element={<AddEditProjectPage />} />}
+        />
+
+        <Route
+          path='/update/:project_id'
+          element={<AdminRoute element={<AddEditProjectPage />} />}
         />
 
         <Route

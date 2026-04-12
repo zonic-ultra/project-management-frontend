@@ -2,9 +2,8 @@
  * Home Page Component
  *
  * The primary landing page for the Nexus Collaboration Suite.
- * Features a futuristic hero section with motion animations and a grid
- * highlighting the core capabilities of the platform.
  */
+
 import React, { useState, useEffect } from "react";
 import { motion } from "motion/react";
 import Layout from "../components/Layout";
@@ -20,33 +19,52 @@ import {
   CheckSquare,
 } from "lucide-react";
 
-const Home = () => {
+const HomePage = () => {
   const [statsData, setStatsData] = useState({
     users: "0",
     tasks: "0",
     projects: "0",
   });
 
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
   useEffect(() => {
     const fetchStats = async () => {
+      setLoading(true);
+      setError(null);
+
       try {
-        const users = await ApiService.getAllUsers();
-        const tasks = await ApiService.getAllTasks();
-        const projects = await ApiService.getAllProjects();
+        const [usersRes, tasksRes, projectsRes] = await Promise.allSettled([
+          ApiService.getTotalMembers(),
+          ApiService.getTotalTasks(),
+          ApiService.getTotalProjects(),
+        ]);
+
+        const getTotal = (result) => {
+          if (result.status !== "fulfilled") return 0;
+          const data = result.value;
+          if (typeof data === "number") return data;
+          if (data?.total !== undefined) return data.total;
+          if (data?.count !== undefined) return data.count;
+          if (typeof data === "string") return parseInt(data, 10) || 0;
+          return 0;
+        };
 
         setStatsData({
-          users: (users.users?.length || 12).toString(),
-          tasks: (tasks.tasks?.length || 48).toString(),
-          projects: (projects.projects?.length || 8).toString(),
+          users: getTotal(usersRes).toLocaleString(),
+          tasks: getTotal(tasksRes).toLocaleString(),
+          projects: getTotal(projectsRes).toLocaleString(),
         });
-      } catch (error) {
-        setStatsData({
-          users: "12",
-          tasks: "48",
-          projects: "8",
-        });
+      } catch (err) {
+        console.error("Error fetching stats:", err);
+        setError("Failed to load live statistics.");
+        setStatsData({ users: "12", tasks: "48", projects: "8" });
+      } finally {
+        setLoading(false);
       }
     };
+
     fetchStats();
   }, []);
 
@@ -106,13 +124,14 @@ const Home = () => {
                   The Nexus
                 </span>
               </h1>
+
               <p className='text-xl md:text-2xl text-lavender-grey max-w-2xl mb-12 leading-relaxed font-light'>
                 Experience the future of collective intelligence. Nexus combines
                 advanced neural sync, seamless teamwork, and futuristic design
                 to power your most ambitious initiatives.
               </p>
 
-              {/* Stats Section */}
+              {/* Stats Section with Rotating Light Effect */}
               <div className='max-w-5xl mx-auto mt-20'>
                 <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-lavender-grey/10 border border-lavender-grey/10 rounded-3xl overflow-hidden shadow-2xl'>
                   {stats.map((stat, idx) => (
@@ -122,13 +141,43 @@ const Home = () => {
                       whileInView={{ opacity: 1 }}
                       viewport={{ once: true }}
                       transition={{ delay: idx * 0.1 }}
-                      className='p-8 bg-ink-black/40 backdrop-blur-sm text-center group hover:bg-prussian-blue/20 transition-colors relative'
+                      className='p-8 bg-ink-black/40 backdrop-blur-sm text-center group hover:bg-prussian-blue/20 transition-all relative overflow-hidden'
                     >
-                      <div className='flex justify-center mb-4'>
-                        <stat.icon className='w-5 h-5 text-dusk-blue/40 group-hover:text-dusk-blue transition-colors duration-500' />
+                      <div className='flex justify-center mb-6 relative'>
+                        {/* Rotating Light Container */}
+                        <div className='relative w-12 h-12 flex items-center justify-center'>
+                          {/* Orbiting Glow Ring 1 */}
+                          <motion.div
+                            className='absolute w-12 h-12 border border-dusk-blue/40 rounded-full'
+                            style={{ borderTopColor: "#3b82f6" }}
+                            animate={{ rotate: 360 }}
+                            transition={{
+                              duration: 4,
+                              repeat: Infinity,
+                              ease: "linear",
+                            }}
+                          />
+
+                          {/* Orbiting Glow Ring 2 (opposite direction) */}
+                          <motion.div
+                            className='absolute w-12 h-12 border border-dusk-blue/20 rounded-full'
+                            animate={{ rotate: -360 }}
+                            transition={{
+                              duration: 6,
+                              repeat: Infinity,
+                              ease: "linear",
+                            }}
+                          />
+
+                          {/* Icon - Reduced Size */}
+                          <div className='relative z-10'>
+                            <stat.icon className='w-7 h-7 text-dusk-blue drop-shadow-[0_0_6px_rgba(59,130,246,0.5)]' />
+                          </div>
+                        </div>
                       </div>
+
                       <h3 className='text-3xl font-display font-bold text-alabaster-grey mb-1 group-hover:scale-110 transition-transform duration-500'>
-                        {stat.value}
+                        {loading ? "..." : stat.value}
                       </h3>
                       <p className='text-[10px] font-bold uppercase tracking-[0.2em] text-lavender-grey/40 group-hover:text-lavender-grey/60 transition-colors'>
                         {stat.label}
@@ -136,12 +185,18 @@ const Home = () => {
                     </motion.div>
                   ))}
                 </div>
+
+                {error && (
+                  <p className='text-center text-red-400 text-sm mt-6'>
+                    {error}
+                  </p>
+                )}
               </div>
             </motion.div>
           </div>
         </section>
 
-        {/* Features Section */}
+        {/* Features Section - Core Capabilities */}
         <section className='py-20 px-4'>
           <div className='max-w-7xl mx-auto'>
             <div className='text-center mb-16'>
@@ -180,4 +235,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default HomePage;

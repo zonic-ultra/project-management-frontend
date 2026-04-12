@@ -57,19 +57,6 @@ const Sidebar = ({ isMobile = false, onClose }) => {
             Home
           </Link>
 
-          <Link
-            to='/about'
-            onClick={handleClick}
-            className={`flex items-center gap-3 px-4 py-3.5 rounded-2xl font-medium transition-all group ${
-              location.pathname === "/about"
-                ? "bg-dusk-blue/20 text-dusk-blue shadow-[inset_4px_0_0_#415A77]"
-                : "hover:bg-white/5 text-alabaster-grey hover:text-white"
-            }`}
-          >
-            <Info className='w-5 h-5' />
-            About
-          </Link>
-
           {/* Dashboard - Admin Only */}
           {isAdmin && (
             <Link
@@ -86,19 +73,19 @@ const Sidebar = ({ isMobile = false, onClose }) => {
             </Link>
           )}
 
-          {/* Tasks - Logged in users */}
-          {isAuth && (
+          {/* Users - Admin Only */}
+          {isAdmin && (
             <Link
-              to='/tasks'
+              to='/members'
               onClick={handleClick}
               className={`flex items-center gap-3 px-4 py-3.5 rounded-2xl font-medium transition-all group ${
-                location.pathname === "/tasks"
+                location.pathname === "/members"
                   ? "bg-dusk-blue/20 text-dusk-blue shadow-[inset_4px_0_0_#415A77]"
                   : "hover:bg-white/5 text-alabaster-grey hover:text-white"
               }`}
             >
-              <CheckSquare className='w-5 h-5' />
-              Tasks
+              <Users className='w-5 h-5' />
+              Members
             </Link>
           )}
 
@@ -118,35 +105,48 @@ const Sidebar = ({ isMobile = false, onClose }) => {
             </Link>
           )}
 
-          {/* Users - Admin Only */}
-          {isAdmin && (
+          {/* Tasks - Logged in users */}
+          {isAuth && (
             <Link
-              to='/users'
+              to='/tasks'
               onClick={handleClick}
               className={`flex items-center gap-3 px-4 py-3.5 rounded-2xl font-medium transition-all group ${
-                location.pathname === "/users"
+                location.pathname === "/tasks"
                   ? "bg-dusk-blue/20 text-dusk-blue shadow-[inset_4px_0_0_#415A77]"
                   : "hover:bg-white/5 text-alabaster-grey hover:text-white"
               }`}
             >
-              <Users className='w-5 h-5' />
-              Users
+              <CheckSquare className='w-5 h-5' />
+              Tasks
             </Link>
           )}
+
+          <Link
+            to='/about'
+            onClick={handleClick}
+            className={`flex items-center gap-3 px-4 py-3.5 rounded-2xl font-medium transition-all group ${
+              location.pathname === "/about"
+                ? "bg-dusk-blue/20 text-dusk-blue shadow-[inset_4px_0_0_#415A77]"
+                : "hover:bg-white/5 text-alabaster-grey hover:text-white"
+            }`}
+          >
+            <Info className='w-5 h-5' />
+            About
+          </Link>
         </nav>
 
         {/* Bottom Section - Clearly Separated */}
         <div className='mt-auto pt-8'>
           {isAuth ? (
             /* Logout Button - Only when logged in */
-            <button
-              type='button'
+            <Link
+              to='/'
               onClick={handleLogout}
               className='w-full flex items-center justify-center gap-3 px-4 py-3.5 rounded-2xl font-medium text-red-400/80 hover:text-red-400 hover:bg-red-500/10 transition-all'
             >
               <LogOut className='w-5 h-5' />
               Logout
-            </button>
+            </Link>
           ) : (
             /* Login & Register - Only when NOT logged in */
             <div className='space-y-3'>

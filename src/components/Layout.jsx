@@ -1,16 +1,13 @@
 import React, { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Menu, Shield, LogOut } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
+import { Menu } from "lucide-react";
 import Sidebar from "../components/SideBar";
-import ApiService from "../service/ApiService";
 import Footer from "./Footer";
 
 const Layout = ({ children }) => {
   const location = useLocation();
-  const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const isAuth = ApiService.isAuthenticated();
   const isAuthPage =
     location.pathname === "/login" || location.pathname === "/register";
   const showDesktopSidebar = !isAuthPage;
@@ -21,9 +18,9 @@ const Layout = ({ children }) => {
       {!isAuthPage && (
         <header className='md:hidden flex items-center justify-between px-4 py-4 border-b border-lavender-grey/20 bg-prussian-blue/95 backdrop-blur-xl sticky top-0 z-50'>
           <Link to='/' className='flex items-center gap-2'>
-            <div className='w-9 h-9 rounded-xl bg-gradient-to-br from-dusk-blue to-lavender-grey flex items-center justify-center'>
+            {/* <div className='w-9 h-9 rounded-xl bg-gradient-to-br from-dusk-blue to-lavender-grey flex items-center justify-center'>
               <Shield className='w-5 h-5 text-white' />
-            </div>
+            </div> */}
             <span className='font-black tracking-tighter text-2xl bg-gradient-to-r from-alabaster-grey to-lavender-grey bg-clip-text text-transparent'>
               NEXUS
             </span>

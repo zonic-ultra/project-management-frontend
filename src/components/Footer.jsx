@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Shield } from "lucide-react";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -12,9 +11,9 @@ const Footer = () => {
           {/* Brand Section */}
           <div className='flex flex-col items-center md:items-start gap-4'>
             <Link to='/' className='flex items-center gap-2 group'>
-              <div className='w-8 h-8 rounded-lg bg-gradient-to-br from-dusk-blue to-lavender-grey flex items-center justify-center shadow-[0_0_15px_rgba(65,90,119,0.3)] group-hover:scale-110 transition-transform'>
+              {/* <div className='w-8 h-8 rounded-lg bg-gradient-to-br from-dusk-blue to-lavender-grey flex items-center justify-center shadow-[0_0_15px_rgba(65,90,119,0.3)] group-hover:scale-110 transition-transform'>
                 <Shield className='w-5 h-5 text-white' />
-              </div>
+              </div>  */}
               <span className='font-black tracking-tighter text-xl bg-gradient-to-r from-alabaster-grey to-lavender-grey bg-clip-text text-transparent'>
                 NEXUS
               </span>
@@ -50,9 +49,12 @@ const Footer = () => {
           {/* Copyright Section */}
           <div className='flex flex-col items-center md:items-end gap-2'>
             <p className='text-lavender-grey/40 text-[10px] font-bold uppercase tracking-[0.2em]'>
-              © {currentYear} Synergy Suite. All Rights Reserved.
+              © {currentYear} NEXUS. All Rights Reserved.
             </p>
             <div className='flex gap-4'>
+              <p className='text-lavender-grey/40 text-[10px] font-bold  tracking-[0.2em]'>
+                DenDev.
+              </p>
               <div className='w-1 h-1 rounded-full bg-dusk-blue animate-pulse' />
               <div className='w-1 h-1 rounded-full bg-lavender-grey/40' />
               <div className='w-1 h-1 rounded-full bg-lavender-grey/40' />
