@@ -221,20 +221,6 @@ export default class ApiService {
     return response.data;
   }
 
-  // static async getAllTasks() {
-  //   const response = await axios.get(`${this.BASE_URL}/tasks`, {
-  //     headers: this.getHeader(),
-  //   });
-  //   return response.data;
-  // }
-
-  // static async getTotalTasks() {
-  //   const response = await axios.get(`${this.BASE_URL}/tasks/total_tasks`, {
-  //     headers: this.getHeader(),
-  //   });
-  //   return response.data;
-  // }
-
   static async getTaskById(id) {
     const response = await axios.get(`${this.BASE_URL}/tasks/find_by_id`, {
       headers: this.getHeader(),
