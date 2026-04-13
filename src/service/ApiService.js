@@ -2,8 +2,8 @@ import axios from "axios";
 import CryptoJS from "crypto-js";
 
 export default class ApiService {
-  static BASE_URL = "http://localhost:8082/api";
-  static ENCRYPTION_KEY = "my_secret_key_123";
+  static BASE_URL = process.env.REACT_APP_API_BASE_URL;
+  static ENCRYPTION_KEY = process.env.REACT_APP_ENCRYPTION_KEY;
 
   static getHeader() {
     const token = this.getToken();
@@ -18,43 +18,9 @@ export default class ApiService {
   }
 
   static decrypt(data) {
-    // try {
     const bytes = CryptoJS.AES.decrypt(data, this.ENCRYPTION_KEY);
     return bytes.toString(CryptoJS.enc.Utf8);
-    // } catch (error) {
-    //   console.warn("Decryption failed");
-    //   return null;
-    // }
   }
-
-  // static saveToken(token) {
-  //   if (!token) return;
-  //   const encrypted = this.encrypt(token);
-  //   localStorage.setItem("token", encrypted);
-  // }
-
-  // static getToken() {
-  //   const encryptedToken = localStorage.getItem("token");
-  //   if (!encryptedToken) return null;
-  //   return this.decrypt(encryptedToken);
-  // }
-
-  // static saveRole(role) {
-  //   if (!role) return;
-  //   const encrypted = this.encrypt(role);
-  //   localStorage.setItem("role", encrypted);
-  // }
-
-  // static getRole() {
-  //   const encryptedRole = localStorage.getItem("role");
-  //   if (!encryptedRole) return null;
-  //   return this.decrypt(encryptedRole);
-  // }
-
-  // static clearAuth() {
-  //   localStorage.removeItem("token");
-  //   localStorage.removeItem("role");
-  // }
 
   //save token with encryption
   static saveToken(token) {
@@ -85,81 +51,6 @@ export default class ApiService {
 
     return this.decrypt(encryptedRole);
   }
-
-  //
-  // static clearAuth() {
-  //   localStorage.removeItem("token");
-  //   localStorage.removeItem("role");
-  // }
-
-  // static logout() {
-  //   this.clearAuth();
-  // }
-
-  // static isAuthenticated() {
-  //   return !!this.getToken();
-  // }
-
-  // static isAdmin() {
-  //   const role = this.getRole();
-  //   // Handle both string and enum cases
-  //   const roleStr = typeof role === "string" ? role.toUpperCase() : role;
-  //   return roleStr === "ADMIN" || roleStr === "ROLE_ADMIN";
-  //   // return role === "ADMIN";
-  // }
-
-  // static saveToken(token) {
-  //   if (!token) return;
-  //   const encrypted = this.encrypt(token);
-  //   localStorage.setItem("token", encrypted);
-  // }
-
-  // static getToken() {
-  //   const encrypted = localStorage.getItem("token");
-  //   return encrypted ? this.decrypt(encrypted) : null;
-  // }
-  // static saveRole(role) {
-  //   if (!role) return;
-  //   const roleStr = String(role).toUpperCase().trim();
-  //   const encrypted = this.encrypt(roleStr);
-  //   localStorage.setItem("role", encrypted);
-  //   console.log("Saved role to localStorage:", roleStr); // for debugging
-  // }
-
-  // static getRole() {
-  //   const encrypted = localStorage.getItem("role");
-  //   if (!encrypted) return null;
-  //   const decrypted = this.decrypt(encrypted);
-  //   return decrypted ? decrypted.toUpperCase() : null;
-  // }
-
-  // static isAdmin() {
-  //   const role = this.getRole();
-  //   return role === "ADMIN";
-  // }
-  // static saveRole(role) {
-  //   if (!role) return;
-  //   const roleStr =
-  //     typeof role === "object" ? role.name || role.toString() : role;
-  //   const encrypted = this.encrypt(roleStr.toUpperCase());
-  //   localStorage.setItem("role", encrypted);
-  // }
-
-  // static getRole() {
-  //   const encrypted = localStorage.getItem("role");
-  //   if (!encrypted) return null;
-  //   const decrypted = this.decrypt(encrypted);
-  //   return decrypted ? decrypted.toUpperCase() : null;
-  // }
-
-  // static isAdmin() {
-  //   const role = this.getRole();
-  //   return role === "ADMIN" || role === "ROLE_ADMIN";
-  // }
-
-  // static isAuthenticated() {
-  //   return !!this.getToken();
-  // }
 
   /**  AUTH && USERS API */
   static async registerUser(registerData) {
