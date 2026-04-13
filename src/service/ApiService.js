@@ -175,48 +175,27 @@ export default class ApiService {
     return response.data; // Keep as is
   }
 
-  static async getLoggedInUsersInfo() {
-    const response = await axios.get(`${this.BASE_URL}/users/current`, {
-      headers: this.getHeader,
-    });
-    return response.data;
-  }
-
   static async getMemberById(id) {
     const response = await axios.get(
       `${this.BASE_URL}/users/get_member/${id}`,
       {
-        headers: this.getHeader,
+        headers: this.getHeader(),
       },
     );
     return response.data;
   }
 
-  static async updateMember(id, updateData) {
+  static async getLoggedInUsersInfo() {
+    const response = await axios.get(`${this.BASE_URL}/users/current`, {
+      headers: this.getHeader(),
+    });
+    return response.data;
+  }
+
+  static async updateProfile(id, updateData) {
     const response = await axios.put(
-      `${this.BASE_URL}/users/update_member/${id}`,
+      `${this.BASE_URL}/users/update_member`,
       updateData,
-      {
-        headers: this.getHeader,
-      },
-    );
-    return response.data;
-  }
-
-  // static async deleteMember(id) {
-  //   const response = await axios.delete(
-  //     `${this.BASE_URL}/users/delete_member`,
-  //     {
-  //       headers: this.getHeader,
-  //       params: { id: id },
-  //     },
-  //   );
-  //   return response.data;
-  // }
-
-  static async deleteMember(id) {
-    const response = await axios.delete(
-      `${this.BASE_URL}/users/delete_member`,
       {
         headers: this.getHeader(),
         params: { id: id },
@@ -226,11 +205,23 @@ export default class ApiService {
   }
 
   static async changePassword(id, passwordData) {
-    const response = await axios.put(
-      `${this.BASE_URL}/users/change_password/${id}`,
+    const response = await axios.patch(
+      `${this.BASE_URL}/users/change_password`,
       passwordData,
       {
-        headers: this.getHeader,
+        headers: this.getHeader(),
+        params: { id: id },
+      },
+    );
+    return response.data;
+  }
+
+  static async deleteMember(id) {
+    const response = await axios.delete(
+      `${this.BASE_URL}/users/delete_member`,
+      {
+        headers: this.getHeader(),
+        params: { id: id },
       },
     );
     return response.data;
@@ -361,25 +352,46 @@ export default class ApiService {
     return response.data;
   }
 
-  static async deleteTask(taskId) {
+  static async deleteTask(id) {
     const response = await axios.delete(`${this.BASE_URL}/tasks/delete`, {
       headers: this.getHeader(),
-      params: { id: taskId },
+      params: { id: id },
     });
     return response.data;
   }
 
-  static async updateTaskStatus(taskId, status) {
+  static async updateTaskStatus(id, status, remarks = "") {
     const response = await axios.patch(
       `${this.BASE_URL}/tasks/update_status`,
-      { taskStatus: status },
+      {
+        newStatus: status,
+        remarks: remarks,
+      },
       {
         headers: this.getHeader(),
-        params: { id: taskId },
+        params: { id },
       },
     );
+
     return response.data;
   }
+
+  /**CHANGELOG API */
+  static async getAllChangeLogs() {
+    const response = await axios.get(`${this.BASE_URL}/change_logs`, {
+      headers: this.getHeader(),
+    });
+    return response.data;
+  }
+
+  static async deleteChangeLog(id) {
+    const response = await axios.delete(`${this.BASE_URL}/change_logs/delete`, {
+      headers: this.getHeader(),
+      params: { id },
+    });
+    return response.data;
+  }
+
   /**AUTHENTICATION CHECKER */
   static clearAuth() {
     localStorage.removeItem("token");

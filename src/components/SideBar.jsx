@@ -9,6 +9,7 @@ import {
   LogOut,
   Home,
   Info,
+  Logs,
 } from "lucide-react";
 // import { i } from "motion/react-client";
 
@@ -56,6 +57,21 @@ const Sidebar = ({ isMobile = false, onClose }) => {
             <Home className='w-5 h-5' />
             Home
           </Link>
+
+          {isAuth && (
+            <Link
+              to='/profile'
+              onClick={handleClick}
+              className={`flex items-center gap-3 px-4 py-3.5 rounded-2xl font-medium transition-all group ${
+                location.pathname === "/profile"
+                  ? "bg-dusk-blue/20 text-dusk-blue shadow-[inset_4px_0_0_#415A77]"
+                  : "hover:bg-white/5 text-alabaster-grey hover:text-white"
+              }`}
+            >
+              <CheckSquare className='w-5 h-5' />
+              Profile
+            </Link>
+          )}
 
           {/* Dashboard - Admin Only */}
           {isAdmin && (
@@ -118,6 +134,21 @@ const Sidebar = ({ isMobile = false, onClose }) => {
             >
               <CheckSquare className='w-5 h-5' />
               Tasks
+            </Link>
+          )}
+
+          {isAdmin && (
+            <Link
+              to='/logs'
+              onClick={handleClick}
+              className={`flex items-center gap-3 px-4 py-3.5 rounded-2xl font-medium transition-all group ${
+                location.pathname === "/logs"
+                  ? "bg-dusk-blue/20 text-dusk-blue shadow-[inset_4px_0_0_#415A77]"
+                  : "hover:bg-white/5 text-alabaster-grey hover:text-white"
+              }`}
+            >
+              <Logs className='w-5 h-5' />
+              Logs
             </Link>
           )}
 

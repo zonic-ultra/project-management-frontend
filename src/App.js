@@ -19,6 +19,8 @@ import TasksPage from "./pages/tasks/TasksPage";
 import MembersPage from "./pages/members/MembersPage";
 import AddEditProjectPage from "./pages/projects/AddEditProjectPage";
 import AddEditTaskPage from "./pages/tasks/AddEditTaskPage";
+import ChangelogPage from "./pages/logs/ChangeLogPage";
+import ProfilePage from "./pages/profile/ProfilePage";
 
 function App() {
   return (
@@ -30,6 +32,14 @@ function App() {
         <Route path='/register' element={<RegisterPage />} />
         <Route path='/terms' element={<TermsPage />} />
 
+        <Route
+          path='/profile'
+          element={<ProtectedRoute element={<ProfilePage />} />}
+        />
+        {/* <Route
+          path='/user/current'
+          element={<ProtectedRoute element={<ProfilePage />} />}
+        /> */}
         <Route
           path='/dashboard'
           element={<AdminRoute element={<DashboardPage />} />}
@@ -65,60 +75,12 @@ function App() {
           path='/tasks/update/:id'
           element={<AdminRoute element={<AddEditTaskPage />} />}
         />
-
-        {/* Tasks */}
-        {/* <Route
-          path='/tasks'
-          element={<ProtectedRoute element={<TaskListPage />} />}
-        />
         <Route
-          path='/add-task'
-          element={<AdminRoute element={<AddEditTaskPage />} />}
+          path='/logs'
+          element={<AdminRoute element={<ChangelogPage />} />}
         />
-        <Route
-          path='/edit-task/:taskId'
-          element={<AdminRoute element={<AddEditTaskPage />} />}
-        /> */}
-
-        {/* Projects */}
-        {/* <Route
-          path='/projects'
-          element={<AboutPage element={<ProjectListPage />} />}
-        />
-        <Route
-          path='/add-project'
-          element={<AdminRoute element={<AddEditProjectPage />} />}
-        />
-        <Route
-          path='/edit-project/:projectId'
-          element={<AdminRoute element={<AddEditProjectPage />} />}
-        /> */}
-
-        {/* Admin Only */}
-        {/* <Route
-          path='/users'
-          element={<AdminRoute element={<UserListPage />} />}
-        /> */}
-
         {/* Fallback */}
         <Route path='*' element={<Navigate to='/' replace />} />
-        {/* ADMIN ROUTES */}
-        {/* <Route
-          path='/category'
-          element={<AdminRoute element={<CategoryPage />} />}
-        /> */}
-        {/* <Route
-          path='/supplier'
-          element={<AdminRoute element={<SupplierPage />} />}
-        /> */}
-        {/* <Route
-          path='/add-supplier'
-          element={<AdminRoute element={<AddEditSupplierPage />} />}
-        // /> */}
-        {/* <Route
-        path='/edit-supplier/:supplierId'
-        {element={<AdminRoute element={<AddEditSupplierPage />
-        * /> */}
       </Routes>
     </Router>
   );

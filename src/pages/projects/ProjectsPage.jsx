@@ -94,37 +94,46 @@ const ProjectPage = () => {
 
       <div className='space-y-8'>
         {/* HEADER */}
-        <div className='flex justify-between items-center'>
+        <div className='flex flex-col md:flex-row md:items-center justify-between gap-4'>
           <div>
-            <h1 className='text-4xl font-black text-alabaster-grey'>
+            <h1 className='text-4xl font-black text-alabaster-grey tracking-tight'>
               Projects
             </h1>
-            <p className='text-lavender-grey'>
+            <p className='text-lavender-grey mt-1'>
               Strategic oversight of all active Nexus operations
             </p>
           </div>
 
           {isAdmin && (
+            // <button
+            //   onClick={() => navigate("/projects/create")}
+            //   className='flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-dusk-blue to-lavender-grey text-white rounded-2xl'
+            // >
+            //   <CirclePlus className='w-6 h-6' />
+            //   New project
+            // </button>
             <button
               onClick={() => navigate("/projects/create")}
-              className='flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-dusk-blue to-lavender-grey text-white rounded-2xl'
+              className='flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-dusk-blue to-lavender-grey text-white font-bold rounded-2xl shadow-lg hover:shadow-[0_0_20px_rgba(65,90,119,0.4)] transition-all active:scale-95'
             >
-              <CirclePlus className='w-6 h-6' />
-              New project
+              <CirclePlus className='w-5 h-5' />
+              Add Project
             </button>
           )}
         </div>
 
         {/* SEARCH (FIXED) */}
-        <div className='max-w-xl'>
-          <SearchBar
-            searchTerm={searchTerm}
-            setSearchTerm={(val) => {
-              setSearchTerm(val);
-              setCurrentPage(1); // ✅ FIX: reset page on search
-            }}
-            placeholder='Search initiatives by name or briefing...'
-          />
+        <div className='flex flex-col md:flex-row gap-4'>
+          <div className='flex-1'>
+            <SearchBar
+              searchTerm={searchTerm}
+              setSearchTerm={(val) => {
+                setSearchTerm(val);
+                setCurrentPage(1); // ✅ FIX: reset page on search
+              }}
+              placeholder='Search project by name or briefing...'
+            />
+          </div>
         </div>
 
         {/* PROJECT CARDS */}
@@ -174,9 +183,11 @@ const ProjectPage = () => {
               </div>
             ))
           ) : (
-            <p className='text-center text-lavender-grey'>
-              No initiatives found
-            </p>
+            <div className='text-center py-20 bg-prussian-blue/20 rounded-3xl border border-dashed border-lavender-grey/10'>
+              <p className='text-lavender-grey/20 font-bold uppercase tracking-widest'>
+                No projects found
+              </p>
+            </div>
           )}
         </div>
 
@@ -188,22 +199,6 @@ const ProjectPage = () => {
           paginate={handlePageChange}
         />
       </div>
-
-      {/* MODAL
-      {selectedProject && (
-        <div className='fixed inset-0 flex items-center justify-center bg-black/70'>
-          <div className='bg-white p-6 rounded-xl max-w-md w-full'>
-            <h2 className='text-xl font-bold'>
-              {selectedProject.project_name || "Untitled Project"}
-            </h2>
-
-            <p>{selectedProject.project_description}</p>
-
-            <button onClick={() => setSelectedProject(null)}>Close</button>
-          </div>
-        </div>
-      )} */}
-
       {/* Intelligence Brief Modal */}
       {selectedProject && (
         <div className='fixed inset-0 z-[100] flex items-center justify-center p-4'>
@@ -243,28 +238,6 @@ const ProjectPage = () => {
                       "No description provided for this initiative."}
                   </p>
                 </div>
-
-                {/* <div className='grid grid-cols-2 gap-4'>
-                  <div className='p-4 rounded-2xl bg-ink-black/50 border border-lavender-grey/10'>
-                    <h4 className='text-[10px] font-black uppercase tracking-widest text-lavender-grey/30 mb-2'>
-                      Status
-                    </h4>
-                    <div className='flex items-center gap-2'>
-                      <div className='w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse' />
-                      <p className='text-xs font-bold text-green-400 uppercase tracking-widest'>
-                        Operational
-                      </p>
-                    </div>
-                  </div>
-                  <div className='p-4 rounded-2xl bg-ink-black/50 border border-lavender-grey/10'>
-                    <h4 className='text-[10px] font-black uppercase tracking-widest text-lavender-grey/30 mb-2'>
-                      Priority
-                    </h4>
-                    <p className='text-xs font-bold text-alabaster-grey uppercase tracking-widest'>
-                      Critical
-                    </p>
-                  </div> */}
-                {/* </div> */}
               </div>
 
               <button

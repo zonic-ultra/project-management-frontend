@@ -72,7 +72,7 @@ const AddEditTaskPage = () => {
       if (isEditing && id) {
         await ApiService.updateTask(id, taskData);
         showMessage("Objective updated successfully");
-        setTimeout(() => navigate("/tasks/update/" + id), 1500);
+        setTimeout(() => navigate("/tasks"), 1500);
       } else {
         await ApiService.addTask(taskData);
         showMessage("Objective initialized successfully");
@@ -222,9 +222,9 @@ const AddEditTaskPage = () => {
                   required
                   className='w-full bg-ink-black/50 border border-lavender-grey/10 rounded-xl py-3 px-4 text-alabaster-grey focus:outline-none focus:border-dusk-blue/50 transition-all appearance-none cursor-pointer'
                 >
-                  <option value='TODO'>Pending (TODO)</option>
+                  <option value='TODO'>Pending</option>
                   <option value='IN_PROGRESS'>In Progress</option>
-                  <option value='COMPLETED'>Completed</option>
+                  <option value='DONE'>Completed</option>
                 </select>
               </div>
 

@@ -1,15 +1,25 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Layout from "../../components/Layout";
 import ApiService from "../../service/ApiService";
-import { Trash2, User, Shield, Edit2, Eye, Users } from "lucide-react";
+import {
+  Trash2,
+  User,
+  Shield,
+  // Edit2,
+  Eye,
+  Users,
+  X,
+  Mail,
+  Calendar,
+} from "lucide-react";
 import { SearchBar, Pagination } from "../../components/DataControls";
-import { Link } from "react-router-dom";
 
 const MembersPage = () => {
   const [members, setMembers] = useState([]);
   const [search, setSearch] = useState("");
   const [message, setMessage] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedMember, setSelectedMember] = useState(null); // For modal
   const membersPerPage = 10;
 
   const loadMembers = useCallback(async () => {
@@ -31,20 +41,19 @@ const MembersPage = () => {
 
   const showMessage = (msg) => {
     setMessage(msg);
-    setTimeout(() => {
-      setMessage("");
-    }, 4000);
+    setTimeout(() => setMessage(""), 4000);
   };
 
   const handleDelete = async (id) => {
+    if (
+      !window.confirm("Are you sure you want to delete this member's access?")
+    )
+      return;
+
     try {
-      if (
-        window.confirm("Are you sure you want to delete this member's access?")
-      ) {
-        await ApiService.deleteMember(id);
-        loadMembers();
-        showMessage("Member access terminated successfully.");
-      }
+      await ApiService.deleteMember(id);
+      loadMembers();
+      showMessage("Member access terminated successfully.");
     } catch (error) {
       showMessage(
         error.response?.data?.message || "Error Deleting Member: " + error,
@@ -52,11 +61,21 @@ const MembersPage = () => {
     }
   };
 
-  // Filter + Pagination Logic
+  // Open modal
+  const openViewModal = (member) => {
+    setSelectedMember(member);
+  };
+
+  // Close modal
+  const closeModal = () => {
+    setSelectedMember(null);
+  };
+
+  // Filter + Pagination
   const filteredMembers = members.filter(
     (member) =>
-      member.name.toLowerCase().includes(search.toLowerCase()) ||
-      member.username.toLowerCase().includes(search.toLowerCase()),
+      member.name?.toLowerCase().includes(search.toLowerCase()) ||
+      member.username?.toLowerCase().includes(search.toLowerCase()),
   );
 
   const indexOfLast = currentPage * membersPerPage;
@@ -71,7 +90,7 @@ const MembersPage = () => {
   return (
     <Layout>
       {message && (
-        <div className='fixed top-8 right-8 z-50 p-4 rounded-xl bg-dusk-blue/10 border border-dusk-blue/20 text-dusk-blue text-sm font-bold shadow-2xl backdrop-blur-xl animate-in fade-in slide-in-from-top-4'>
+        <div className='fixed top-8 right-8 z-50 p-4 rounded-xl bg-dusk-blue/10 border border-dusk-blue/20 text-dusk-blue text-sm font-bold shadow-2xl backdrop-blur-xl'>
           {message}
         </div>
       )}
@@ -132,11 +151,7 @@ const MembersPage = () => {
                   <td className='px-6 py-4'>
                     <div className='flex items-center gap-3'>
                       <div
-                        className={`w-8 h-8 rounded-lg flex items-center justify-center ${
-                          member.role === "ADMIN"
-                            ? "bg-dusk-blue/10 text-dusk-blue"
-                            : "bg-lavender-grey/5 text-lavender-grey/40"
-                        }`}
+                        className={`w-8 h-8 rounded-lg flex items-center justify-center ${member.role === "ADMIN" ? "bg-dusk-blue/10 text-dusk-blue" : "bg-lavender-grey/5 text-lavender-grey/40"}`}
                       >
                         {member.role === "ADMIN" ? (
                           <Shield className='w-4 h-4' />
@@ -156,11 +171,7 @@ const MembersPage = () => {
 
                   <td className='px-6 py-4'>
                     <span
-                      className={`text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded ${
-                        member.role === "ADMIN"
-                          ? "bg-dusk-blue/10 text-dusk-blue"
-                          : "bg-lavender-grey/5 text-lavender-grey/40"
-                      }`}
+                      className={`text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded ${member.role === "ADMIN" ? "bg-dusk-blue/10 text-dusk-blue" : "bg-lavender-grey/5 text-lavender-grey/40"}`}
                     >
                       {member.role}
                     </span>
@@ -168,21 +179,21 @@ const MembersPage = () => {
 
                   <td className='px-6 py-4'>
                     <div className='flex items-center justify-center gap-2'>
-                      <Link
-                        to={`/view_member/${member.id}`}
-                        className='p-2 text-lavender-grey/20 hover:text-dusk-blue hover:bg-dusk-blue/10 rounded-lg transition-all'
+                      <button
+                        onClick={() => openViewModal(member)}
+                        className='p-2 text-lavender-grey/20  hover:text-blue-400 hover:bg-blue-400/10 rounded-lg transition-all'
                         title='View Profile'
                       >
                         <Eye className='w-4 h-4' />
-                      </Link>
+                      </button>
 
-                      <Link
+                      {/* <Link
                         to={`/update_member/${member.id}`}
                         className='p-2 text-lavender-grey/20 hover:text-green-400 hover:bg-green-400/10 rounded-lg transition-all'
                         title='Edit Agent'
                       >
                         <Edit2 className='w-4 h-4' />
-                      </Link>
+                      </Link> */}
 
                       {member.role !== "ADMIN" && (
                         <button
@@ -216,6 +227,90 @@ const MembersPage = () => {
           paginate={changePage}
         />
       </div>
+
+      {/* User View Modal */}
+      {selectedMember && (
+        <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4'>
+          <div className='bg-prussian-blue/95 border border-lavender-grey/20 rounded-3xl w-full max-w-md overflow-hidden shadow-2xl'>
+            {/* Modal Header */}
+            <div className='flex items-center justify-between px-6 py-5 border-b border-lavender-grey/10'>
+              <div className='flex items-center gap-3'>
+                <div
+                  className={`w-10 h-10 rounded-2xl flex items-center justify-center ${selectedMember.role === "ADMIN" ? "bg-dusk-blue/10 text-dusk-blue" : "bg-lavender-grey/10 text-lavender-grey"}`}
+                >
+                  {selectedMember.role === "ADMIN" ? (
+                    <Shield className='w-5 h-5' />
+                  ) : (
+                    <User className='w-5 h-5' />
+                  )}
+                </div>
+                <div>
+                  <h2 className='text-xl font-bold text-alabaster-grey'>
+                    {selectedMember.name}
+                  </h2>
+                  <p className='text-xs text-lavender-grey/60 font-mono'>
+                    ID: {selectedMember.id}
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={closeModal}
+                className='p-2 text-lavender-grey/40 hover:text-alabaster-grey hover:bg-lavender-grey/10 rounded-xl transition-colors'
+              >
+                <X className='w-5 h-5' />
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <div className='p-6 space-y-6'>
+              <div className='flex items-center gap-3 text-sm'>
+                <Mail className='w-5 h-5 text-lavender-grey' />
+                <div>
+                  <p className='text-lavender-grey/60 text-xs'>EMAIL</p>
+                  <p className='text-alabaster-grey'>
+                    {selectedMember.username}
+                  </p>
+                </div>
+              </div>
+
+              <div className='flex items-center gap-3 text-sm'>
+                <Shield className='w-5 h-5 text-lavender-grey' />
+                <div>
+                  <p className='text-lavender-grey/60 text-xs'>ROLE</p>
+                  <span
+                    className={`inline-block text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full ${selectedMember.role === "ADMIN" ? "bg-dusk-blue/10 text-dusk-blue" : "bg-lavender-grey/10 text-lavender-grey"}`}
+                  >
+                    {selectedMember.role || "MEMBER"}
+                  </span>
+                </div>
+              </div>
+
+              {/* You can add more fields here if your member object has them (e.g. joined date, status, etc.) */}
+              {selectedMember.createdAt && (
+                <div className='flex items-center gap-3 text-sm'>
+                  <Calendar className='w-5 h-5 text-lavender-grey' />
+                  <div>
+                    <p className='text-lavender-grey/60 text-xs'>JOINED</p>
+                    <p className='text-alabaster-grey'>
+                      {new Date(selectedMember.createdAt).toLocaleDateString()}
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Modal Footer */}
+            <div className='px-6 py-4 border-t border-lavender-grey/10 flex justify-end'>
+              <button
+                onClick={closeModal}
+                className='px-6 py-2 text-sm font-bold uppercase tracking-widest text-lavender-grey hover:text-alabaster-grey transition-colors'
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </Layout>
   );
 };
