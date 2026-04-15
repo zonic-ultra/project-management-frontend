@@ -211,19 +211,18 @@ const TasksPage = () => {
 
                     <div>
                       <h3 className='text-lg font-bold text-alabaster-grey group-hover:text-dusk-blue transition-colors'>
-                        {task.task_name || task.name}
+                        {task.task_name}
                       </h3>
 
                       <div className='flex flex-wrap items-center gap-4 mt-2 text-xs font-bold uppercase tracking-widest text-lavender-grey/20'>
                         <span className='flex items-center gap-1.5'>
                           <User className='w-3 h-3' />
-                          {task.username || task.assignedUser}
+                          {task.username}
                         </span>
                         <span className='flex items-center gap-1.5'>
                           <Briefcase className='w-3 h-3' />
                           {task.project_name}
                         </span>
-
                         <span className='flex items-center gap-1.5'>
                           <Clock className='w-3 h-3' />
                           {task.dueDate}
@@ -242,7 +241,7 @@ const TasksPage = () => {
                       onChange={(e) => openStatusModal(task, e.target.value)}
                       className='bg-ink-black border border-lavender-grey/10 rounded-xl px-4 py-2 text-xs font-bold uppercase tracking-widest text-lavender-grey focus:outline-none focus:border-dusk-blue/50 transition-all cursor-pointer'
                     >
-                      {/* <option
+                      <option
                         className='bg-yellow-400/10 text-yellow-400'
                         value='TODO'
                       >
@@ -259,10 +258,7 @@ const TasksPage = () => {
                         value='DONE'
                       >
                         Completed
-                      </option> */}
-                      <option value='TODO'>Pending</option>
-                      <option value='IN_PROGRESS'>In Progress</option>
-                      <option value='DONE'>Completed</option>
+                      </option>
                     </select>
 
                     <div className='flex items-center gap-2'>
