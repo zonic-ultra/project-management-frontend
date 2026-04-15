@@ -6,8 +6,8 @@
 
 import React, { useState, useEffect } from "react";
 import { motion } from "motion/react";
-import Layout from "../components/Layout";
-import ApiService from "../service/ApiService";
+import Layout from "../../components/Layout";
+import ApiService from "../../service/ApiService";
 import {
   Rocket,
   Shield,

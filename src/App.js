@@ -7,13 +7,10 @@ import {
 } from "react-router-dom";
 import RegisterPage from "./pages/auth/RegisterPage";
 import LoginPage from "./pages/auth/LoginPage";
-import HomePage from "./pages/HomePage";
-import AboutPage from "./pages/AboutPage";
+import HomePage from "./pages/home/HomePage";
+import AboutPage from "./pages/about/AboutPage";
 import TermsPage from "./pages/terms/Terms";
-import DashboardPage from "./pages/DashboardPage";
-// import TasksPage from "./pages/TasksPage";
 import ProjectsPage from "./pages/projects/ProjectsPage";
-// import UsersPage from "./pages/UsersPage";
 import { AdminRoute, ProtectedRoute } from "./service/Guard";
 import TasksPage from "./pages/tasks/TasksPage";
 import MembersPage from "./pages/members/MembersPage";
@@ -21,6 +18,7 @@ import AddEditProjectPage from "./pages/projects/AddEditProjectPage";
 import AddEditTaskPage from "./pages/tasks/AddEditTaskPage";
 import ChangelogPage from "./pages/logs/ChangeLogPage";
 import ProfilePage from "./pages/profile/ProfilePage";
+import DashboardPage from "./pages/dashboard/DashboardPage";
 
 function App() {
   return (
@@ -36,10 +34,7 @@ function App() {
           path='/profile'
           element={<ProtectedRoute element={<ProfilePage />} />}
         />
-        {/* <Route
-          path='/user/current'
-          element={<ProtectedRoute element={<ProfilePage />} />}
-        /> */}
+
         <Route
           path='/dashboard'
           element={<AdminRoute element={<DashboardPage />} />}

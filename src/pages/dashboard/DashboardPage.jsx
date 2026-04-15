@@ -6,8 +6,8 @@
  * system health metrics using futuristic UI elements.
  */
 import React, { useState, useEffect, useCallback } from "react";
-import Layout from "../components/Layout";
-import ApiService from "../service/ApiService";
+import Layout from "../../components/Layout";
+import ApiService from "../../service/ApiService";
 import {
   Users,
   CheckSquare,

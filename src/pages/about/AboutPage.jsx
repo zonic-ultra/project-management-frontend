@@ -6,7 +6,7 @@
  */
 import React from "react";
 import { motion } from "motion/react";
-import Layout from "../components/Layout";
+import Layout from "../../components/Layout";
 import { Shield, Cpu } from "lucide-react";
 
 const About = () => {
