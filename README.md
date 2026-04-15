@@ -1,5 +1,4 @@
 # NEXUS - Project Management Frontend
-[![Ask DeepWiki](https://devin.ai/assets/askdeepwiki.png)](https://deepwiki.com/zonic-ultra/project-management-frontend)
 
 This repository contains the frontend for NEXUS, a futuristic and robust project management suite designed for high-performance team collaboration. Built with React and styled with Tailwind CSS, it provides a seamless and responsive interface for managing projects, tasks, and team members. The application features a thematic UI inspired by advanced command centers, role-based access control, and secure communication with a backend API.
 
