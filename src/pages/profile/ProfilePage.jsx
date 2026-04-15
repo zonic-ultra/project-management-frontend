@@ -153,7 +153,7 @@ const ProfilePage = () => {
             </div>
             <div>
               <h1 className='text-3xl md:text-4xl font-black text-alabaster-grey tracking-tight'>
-                Agent Profile
+                Your Profile
               </h1>
               <p className='text-lavender-grey mt-1 text-sm md:text-base'>
                 Manage your Nexus identity and security protocols
@@ -223,18 +223,18 @@ const ProfilePage = () => {
                 <div className='grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8'>
                   <div className='space-y-1'>
                     <p className='text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-lavender-grey/40'>
-                      Full Designation
+                      Name
                     </p>
                     <p className='text-base sm:text-lg font-medium text-alabaster-grey break-words'>
-                      {userInfo.name || "Unknown Agent"}
+                      {userInfo.name}
                     </p>
                   </div>
                   <div className='space-y-1'>
                     <p className='text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-lavender-grey/40'>
-                      Nexus ID (Email)
+                      Email
                     </p>
                     <p className='text-base sm:text-lg font-medium text-alabaster-grey break-all'>
-                      {userInfo.email || userInfo.username || "N/A"}
+                      {userInfo.username}
                     </p>
                   </div>
                   <div className='space-y-1'>
@@ -292,7 +292,7 @@ const ProfilePage = () => {
                   <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
                     <div className='space-y-2'>
                       <label className='text-[10px] font-bold uppercase tracking-widest text-lavender-grey/40 ml-1'>
-                        Full Designation
+                        Name
                       </label>
                       <div className='relative'>
                         <User className='absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-lavender-grey/20' />
@@ -309,14 +309,17 @@ const ProfilePage = () => {
                     </div>
 
                     <div className='space-y-2'>
-                      <label className='text-[10px] font-bold uppercase tracking-widest text-lavender-grey/40 ml-1'>
-                        Email{" "}
-                      </label>
-                      <span className='text-red-400 text-xs ml-1'>
-                        <br />
-                        If email changed you need to login again with your new
-                        email
-                      </span>
+                      {/* Label and Warning Row */}
+                      <div className='flex items-center justify-between gap-1 px-1'>
+                        <label className='text-[10px] font-bold uppercase tracking-widest text-lavender-grey/40'>
+                          Email
+                        </label>
+                        <p className='text-red-400 text-[10px] leading-none'>
+                          If email changed, login again with your new email
+                        </p>
+                      </div>
+
+                      {/* Input Field */}
                       <div className='relative'>
                         <Mail className='absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-lavender-grey/20' />
                         <input

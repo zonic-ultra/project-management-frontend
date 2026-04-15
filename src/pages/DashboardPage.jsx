@@ -119,23 +119,23 @@ const DashboardPage = () => {
 
   const statCards = [
     {
-      name: "Active Agents",
+      name: "Active Members",
       value: stats.users,
       icon: Users,
       color: "text-dusk-blue",
       bg: "bg-dusk-blue/10",
-      desc: "Total members in Nexus",
+      desc: "Total registered members in the system",
     },
     {
-      name: "Matrix Objectives",
+      name: "Tasks",
       value: stats.tasks,
       icon: CheckSquare,
       color: "text-lavender-grey",
       bg: "bg-lavender-grey/10",
-      desc: "Total mission tasks",
+      desc: "Total tasks",
     },
     {
-      name: "Nexus Initiatives",
+      name: "Projects",
       value: stats.projects,
       icon: Briefcase,
       color: "text-dusk-blue",
@@ -166,7 +166,7 @@ const DashboardPage = () => {
                 System Overview
               </h1>
               <p className='text-lavender-grey mt-1'>
-                Real-time intelligence from the Nexus core
+                Live system status and activity overview
               </p>
             </div>
           </div>
@@ -176,7 +176,7 @@ const DashboardPage = () => {
             disabled={loading}
           >
             <Activity className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
-            Refresh Matrix
+            Refresh Data
           </button>
         </div>
 
@@ -218,7 +218,7 @@ const DashboardPage = () => {
         <div className='p-8 rounded-3xl bg-prussian-blue/30 border border-lavender-grey/10'>
           <h3 className='text-xl font-bold text-alabaster-grey mb-8 flex items-center gap-3'>
             <CheckSquare className='w-5 h-5 text-dusk-blue' />
-            Objective Status
+            Task Status
           </h3>
 
           <div className='grid grid-cols-1 md:grid-cols-3 gap-8'>
@@ -278,7 +278,7 @@ const DashboardPage = () => {
             <div className='flex items-center gap-3'>
               <Activity className='w-5 h-5 text-dusk-blue' />
               <h3 className='text-xl font-bold text-alabaster-grey'>
-                Neural Activity Feed
+                Recent Activity Log
               </h3>
             </div>
             <span className='text-[10px] font-bold uppercase tracking-widest text-dusk-blue bg-dusk-blue/10 px-3 py-1 rounded-full'>

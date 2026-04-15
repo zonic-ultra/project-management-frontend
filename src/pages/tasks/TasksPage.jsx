@@ -81,9 +81,9 @@ const TasksPage = () => {
       setSelectedTask(null);
       setNewStatus("");
       setRemarks("");
-      showMessage("Status updated successfully");
+      showMessage("Task status updated");
     } catch (error) {
-      showMessage(error.response?.data?.message || "Failed to update status");
+      showMessage(error.response?.data?.message || "Unable to update status");
     }
   };
 
@@ -94,9 +94,9 @@ const TasksPage = () => {
       setTasks((prev) => prev.filter((t) => t.id !== selectedTask.id));
       setShowDeleteModal(false);
       setSelectedTask(null);
-      showMessage("Task removed from matrix");
+      showMessage("Task deleted successfully");
     } catch (error) {
-      showMessage(error.response?.data?.message || "Failed to delete task");
+      showMessage(error.response?.data?.message || "Unable to delete task");
     }
   };
 
@@ -133,11 +133,9 @@ const TasksPage = () => {
         <div className='flex flex-col md:flex-row md:items-center justify-between gap-4'>
           <div>
             <h1 className='text-4xl font-black text-alabaster-grey tracking-tight'>
-              Task Matrix
+              Tasks
             </h1>
-            <p className='text-lavender-grey mt-1'>
-              Manage and track mission-critical objectives
-            </p>
+            <p className='text-lavender-grey mt-1'>Manage and track tasks</p>
           </div>
           {isAdmin && (
             <button
@@ -145,7 +143,7 @@ const TasksPage = () => {
               className='flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-dusk-blue to-lavender-grey text-white font-bold rounded-2xl shadow-lg hover:shadow-[0_0_20px_rgba(65,90,119,0.4)] transition-all active:scale-95'
             >
               <CirclePlus className='w-5 h-5' />
-              Add Task
+              Create Task
             </button>
           )}
         </div>
@@ -159,7 +157,7 @@ const TasksPage = () => {
                 setSearchTerm(val);
                 setCurrentPage(1);
               }}
-              placeholder='Search task or agents...'
+              placeholder='Search tasks or users......'
             />
           </div>
 
@@ -213,13 +211,13 @@ const TasksPage = () => {
 
                     <div>
                       <h3 className='text-lg font-bold text-alabaster-grey group-hover:text-dusk-blue transition-colors'>
-                        {task.task_name || task.name}
+                        {task.task_name}
                       </h3>
 
                       <div className='flex flex-wrap items-center gap-4 mt-2 text-xs font-bold uppercase tracking-widest text-lavender-grey/20'>
                         <span className='flex items-center gap-1.5'>
                           <User className='w-3 h-3' />
-                          {task.username || task.assignedUser}
+                          {task.username}
                         </span>
                         <span className='flex items-center gap-1.5'>
                           <Briefcase className='w-3 h-3' />
@@ -232,21 +230,35 @@ const TasksPage = () => {
                       </div>
 
                       <p className='mt-3 text-sm text-lavender-grey/60 line-clamp-1 italic'>
-                        {task.contents || task.description}
+                        {task.contents}
                       </p>
                     </div>
                   </div>
 
                   <div className='flex items-center gap-3'>
-                    {/* ✅ FIXED SELECT */}
                     <select
                       value={currentStatus}
                       onChange={(e) => openStatusModal(task, e.target.value)}
                       className='bg-ink-black border border-lavender-grey/10 rounded-xl px-4 py-2 text-xs font-bold uppercase tracking-widest text-lavender-grey focus:outline-none focus:border-dusk-blue/50 transition-all cursor-pointer'
                     >
-                      <option value='TODO'>Pending</option>
-                      <option value='IN_PROGRESS'>In Progress</option>
-                      <option value='DONE'>Completed</option>
+                      <option
+                        className='bg-yellow-400/10 text-yellow-400'
+                        value='TODO'
+                      >
+                        Pending
+                      </option>
+                      <option
+                        className='bg-blue-400/10 text-blue-400'
+                        value='IN_PROGRESS'
+                      >
+                        In Progress
+                      </option>
+                      <option
+                        className='bg-green-400/10 text-green-400 '
+                        value='DONE'
+                      >
+                        Completed
+                      </option>
                     </select>
 
                     <div className='flex items-center gap-2'>
@@ -279,7 +291,7 @@ const TasksPage = () => {
           ) : (
             <div className='text-center py-20 bg-prussian-blue/20 rounded-3xl border border-dashed border-lavender-grey/10'>
               <p className='text-lavender-grey/20 font-bold uppercase tracking-widest'>
-                No objectives found in matrix
+                No tasks available
               </p>
             </div>
           )}
@@ -306,7 +318,7 @@ const TasksPage = () => {
                 </div>
                 <div>
                   <h3 className='text-xl font-black text-alabaster-grey'>
-                    Update Status:{" "}
+                    Change Status:{" "}
                     <span className='text-dusk-blue'>{newStatus}</span>
                   </h3>
                   <h4 className='text-lg font-bold text-alabaster-grey'>
@@ -355,26 +367,27 @@ const TasksPage = () => {
           <div className='w-full max-w-sm p-8 rounded-3xl bg-prussian-blue border border-red-400/10 shadow-2xl text-center'>
             <Trash2 className='w-8 h-8 text-red-400 mx-auto mb-4' />
             <h3 className='text-l font-black text-alabaster-grey'>
-              Are you sure you want to Delete ?
+              Delete this task?
             </h3>
             <p className='text-lavender-grey mt-2'>
-              This will permanently remove{" "}
-              <strong>"{selectedTask.task_name}"</strong>
+              This action cannot be undone:
+              <br />
+              <strong className='block mt-1'>"{selectedTask.task_name}"</strong>
             </p>
 
-            <div className=' flex gap-3 mt-8'>
+            <div className='flex gap-3 mt-8'>
               <button
                 onClick={() => setShowDeleteModal(false)}
-                className='flex-1 py-4 bg-lavender-grey/5 text-lavender-grey font-black rounded-2xl'
+                className='flex-1 py-2 bg-lavender-grey/5 hover:bg-lavender-grey/15 text-lavender-grey font-black rounded-2xl transition-colors'
               >
                 Cancel
               </button>
 
               <button
                 onClick={handleDeleteTask}
-                className='flex-1 py-4 bg-red-400 text-white font-black rounded-2xl'
+                className='flex-1 py-2 bg-red-400 hover:bg-red-500 text-white font-black rounded-2xl transition-colors shadow-lg shadow-red-400/20'
               >
-                Confirm
+                Delete
               </button>
             </div>
           </div>

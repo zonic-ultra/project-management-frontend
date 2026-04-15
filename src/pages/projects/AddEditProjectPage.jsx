@@ -15,18 +15,15 @@ const AddEditProjectPage = () => {
     setTimeout(() => setMessage(""), 4000);
   };
 
-  // ✅ FIXED STATE (matches UI)
+  // FIXED STATE (matches UI)
   const [project_name, setProjectName] = useState("");
   const [project_description, setProjectDescription] = useState("");
 
   const isEditing = Boolean(project_id);
 
-  // =========================
   // LOAD DATA (EDIT MODE ONLY)
-  // =========================
   useEffect(() => {
-    if (!project_id) return; // ✅ prevents "undefined" API call
-
+    if (!project_id) return;
     const loadProject = async () => {
       try {
         const result = await ApiService.getProjectById(project_id);
@@ -42,9 +39,6 @@ const AddEditProjectPage = () => {
     loadProject();
   }, [project_id]);
 
-  // =========================
-  // SUBMIT
-  // =========================
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -56,15 +50,15 @@ const AddEditProjectPage = () => {
     try {
       if (isEditing) {
         await ApiService.updateProject(project_id, projectData);
-        showMessage("Project updated successfully");
+        showMessage("Project updated successfully.");
       } else {
         await ApiService.createProject(projectData);
-        showMessage("Project initialized successfully");
+        showMessage("Project created successfully.");
       }
 
       setTimeout(() => navigate("/projects"), 1500);
     } catch (error) {
-      showMessage("Error saving project: " + error);
+      showMessage("Failed to save project: " + error);
     }
   };
 
@@ -84,7 +78,7 @@ const AddEditProjectPage = () => {
           className='flex items-center gap-2 text-lavender-grey hover:text-dusk-blue transition-colors group'
         >
           <ArrowLeft className='w-4 h-4 group-hover:-translate-x-1 transition-transform' />
-          Back to Archives
+          Back to Projects
         </button>
 
         {/* CARD (UI SAME) */}
@@ -100,10 +94,10 @@ const AddEditProjectPage = () => {
 
               <div>
                 <h1 className='text-2xl font-black text-alabaster-grey tracking-tight'>
-                  {isEditing ? "Modify Initiative" : "Initialize Initiative"}
+                  {isEditing ? "Edit Project" : "Create Project"}
                 </h1>
                 <p className='text-lavender-grey text-sm'>
-                  Strategic parameters for Nexus operations
+                  Fill in the project details below
                 </p>
               </div>
             </div>
@@ -113,7 +107,7 @@ const AddEditProjectPage = () => {
               {/* NAME */}
               <div className='space-y-2'>
                 <label className='text-xs font-bold uppercase tracking-widest text-dusk-blue/60 ml-1'>
-                  Project Name
+                  Project Title
                 </label>
                 <input
                   type='text'
@@ -121,14 +115,14 @@ const AddEditProjectPage = () => {
                   onChange={(e) => setProjectName(e.target.value)}
                   required
                   className='w-full bg-ink-black/50 border border-lavender-grey/10 rounded-xl py-3 px-4 text-alabaster-grey placeholder:text-lavender-grey/10 focus:outline-none focus:border-dusk-blue/50 transition-all'
-                  placeholder='e.g. Project Quantum'
+                  placeholder='e.g. Project E-commerce Revamp...'
                 />
               </div>
 
               {/* DESCRIPTION */}
               <div className='space-y-2'>
                 <label className='text-xs font-bold uppercase tracking-widest text-dusk-blue/60 ml-1'>
-                  Mission Briefing
+                  Project Description
                 </label>
                 <textarea
                   value={project_description}
@@ -136,7 +130,7 @@ const AddEditProjectPage = () => {
                   required
                   rows={5}
                   className='w-full bg-ink-black/50 border border-lavender-grey/10 rounded-xl py-3 px-4 text-alabaster-grey placeholder:text-lavender-grey/10 focus:outline-none focus:border-dusk-blue/50 transition-all resize-none'
-                  placeholder='Detailed mission objectives...'
+                  placeholder='Describe the purpose and goals of this project...'
                 />
               </div>
 
@@ -146,7 +140,7 @@ const AddEditProjectPage = () => {
                 className='w-full py-4 mt-4 bg-gradient-to-r from-dusk-blue to-lavender-grey text-white font-black rounded-xl shadow-lg hover:shadow-[0_0_30px_rgba(65,90,119,0.4)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 uppercase tracking-widest text-sm flex items-center justify-center gap-2'
               >
                 <Save className='w-4 h-4' />
-                {isEditing ? "Commit Changes" : "Initialize Initiative"}
+                {isEditing ? "Save Changes" : "Create Project"}
               </button>
             </form>
           </div>

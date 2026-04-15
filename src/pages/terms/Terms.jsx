@@ -12,10 +12,10 @@ const Terms = () => {
           </div>
           <div>
             <h1 className='text-4xl font-black text-alabaster-grey tracking-tight'>
-              Terms of Service
+              Terms
             </h1>
             <p className='text-lavender-grey mt-1'>
-              Legal protocols for the Synergy Collaboration Suite
+              Rules for using this platform
             </p>
           </div>
         </div>
@@ -25,14 +25,12 @@ const Terms = () => {
             <div className='flex items-center gap-3 mb-4'>
               <Shield className='w-5 h-5 text-dusk-blue' />
               <h3 className='text-xl font-bold text-alabaster-grey'>
-                1. Acceptance of Protocols
+                1. Acceptance of Terms
               </h3>
             </div>
             <p className='text-lavender-grey leading-relaxed'>
-              By accessing the Synergy platform, you agree to be bound by these
-              mission protocols. Our system is designed for high-performance
-              collaboration, and your use of the service constitutes acceptance
-              of all terms outlined herein.
+              By using this platform, you agree to these terms. Using the system
+              means you accept all rules listed here.
             </p>
           </section>
 
@@ -40,14 +38,13 @@ const Terms = () => {
             <div className='flex items-center gap-3 mb-4'>
               <Scale className='w-5 h-5 text-lavender-grey' />
               <h3 className='text-xl font-bold text-alabaster-grey'>
-                2. Agent Responsibilities
+                2. User Responsibilities
               </h3>
             </div>
             <p className='text-lavender-grey leading-relaxed'>
-              Agents are responsible for maintaining the security of their
-              access credentials. Any activity originating from an agent's
-              terminal is the sole responsibility of that agent. Unauthorized
-              access to the Synergy Core is strictly prohibited.
+              You are responsible for keeping your account secure. Any action
+              made using your account is your responsibility. Do not access the
+              system without permission.
             </p>
           </section>
 
@@ -55,21 +52,20 @@ const Terms = () => {
             <div className='flex items-center gap-3 mb-4'>
               <AlertCircle className='w-5 h-5 text-red-400' />
               <h3 className='text-xl font-bold text-alabaster-grey'>
-                3. Data Integrity
+                3. Data Accuracy
               </h3>
             </div>
             <p className='text-lavender-grey leading-relaxed'>
-              Synergy provides real-time synchronization of mission data. While
-              we strive for 100% core stability, we do not guarantee that the
-              matrix will be free from neural latency or temporary
-              synchronization offsets.
+              The system updates data in real time. We try to keep everything
+              working properly, but we cannot guarantee there will be no errors
+              or interruptions.
             </p>
           </section>
         </div>
 
         <div className='text-center pt-10 border-t border-lavender-grey/10'>
           <p className='text-[10px] font-bold uppercase tracking-[0.2em] text-lavender-grey/20'>
-            Last Protocol Update: April 2026
+            Last updated: April 2026
           </p>
         </div>
       </div>

@@ -45,15 +45,15 @@ const ChangelogPage = () => {
   }, [fetchLogs]);
 
   const handleDeleteLog = async (id) => {
-    if (!window.confirm("Are you sure you want to purge this audit entry?"))
+    if (!window.confirm("Are you sure you want to delete this log entry?"))
       return;
     try {
       await ApiService.deleteChangeLog(id);
       setLogs(logs.filter((log) => log.id !== id));
-      showMessage("Audit entry deleted successfully");
+      showMessage("Log deleted successfully");
       navigate("/logs");
     } catch (error) {
-      showMessage("Error deleting log: " + error);
+      showMessage("Failed to delete log: " + error);
     }
   };
 
@@ -96,10 +96,10 @@ const ChangelogPage = () => {
         <div className='flex flex-col md:flex-row md:items-center justify-between gap-4'>
           <div>
             <h1 className='text-4xl font-black text-alabaster-grey tracking-tight'>
-              Mission Audit Logs
+              Change Logs
             </h1>
             <p className='text-lavender-grey mt-1'>
-              Historical record of all strategic status transitions
+              History of task updates and changes
             </p>
           </div>
           <div className='p-3 rounded-2xl bg-dusk-blue/10 border border-dusk-blue/20 text-dusk-blue'>
@@ -114,7 +114,7 @@ const ChangelogPage = () => {
               setSearchTerm(val);
               setCurrentPage(1);
             }}
-            placeholder='Search by agent, task ID, or remarks...'
+            placeholder='Search by members, task ID, or remarks...'
           />
         </div>
 
@@ -151,7 +151,7 @@ const ChangelogPage = () => {
                       </div>
                       <div>
                         <p className='text-[10px] uppercase tracking-widest text-lavender-grey/30 font-bold'>
-                          Agent
+                          Action By
                         </p>
                         <p className='text-sm font-bold text-alabaster-grey'>
                           {log.changeBy}
@@ -201,7 +201,7 @@ const ChangelogPage = () => {
           ) : (
             <div className='text-center py-20 bg-prussian-blue/20 rounded-3xl border border-dashed border-lavender-grey/10'>
               <p className='text-lavender-grey/20 font-bold uppercase tracking-widest'>
-                No audit entries found in archives
+                No logs found
               </p>
             </div>
           )}

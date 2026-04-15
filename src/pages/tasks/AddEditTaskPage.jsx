@@ -51,7 +51,7 @@ const AddEditTaskPage = () => {
           }
         }
       } catch (error) {
-        showMessage("Error initializing mission parameters: " + error);
+        showMessage("Failed to load task data: " + error);
       }
     };
     fetchData();
@@ -71,16 +71,16 @@ const AddEditTaskPage = () => {
     try {
       if (isEditing && id) {
         await ApiService.updateTask(id, taskData);
-        showMessage("Objective updated successfully");
+        showMessage("Task updated successfully");
         setTimeout(() => navigate("/tasks"), 1500);
       } else {
         await ApiService.addTask(taskData);
-        showMessage("Objective initialized successfully");
+        showMessage("Task created successfully");
         setTimeout(() => navigate("/tasks"), 1500);
       }
     } catch (error) {
       showMessage(
-        error.response?.data?.message || "Error saving task: " + error,
+        error.response?.data?.message || "Failed to save task: " + error,
       );
     }
   };
@@ -106,7 +106,7 @@ const AddEditTaskPage = () => {
           className='flex items-center gap-2 text-lavender-grey hover:text-dusk-blue transition-colors group'
         >
           <ArrowLeft className='w-4 h-4 group-hover:-translate-x-1 transition-transform' />
-          Back to Matrix
+          Back to Tasks
         </button>
 
         <div className='p-8 rounded-3xl bg-prussian-blue/50 backdrop-blur-xl border border-lavender-grey/10 shadow-2xl relative overflow-hidden'>
@@ -119,11 +119,9 @@ const AddEditTaskPage = () => {
               </div>
               <div>
                 <h1 className='text-2xl font-black text-alabaster-grey tracking-tight'>
-                  {isEditing ? "Modify Objective" : "Initialize Objective"}
+                  {isEditing ? "Edit Task" : "Create Task"}
                 </h1>
-                <p className='text-lavender-grey text-sm'>
-                  Define mission-critical parameters
-                </p>
+                <p className='text-lavender-grey text-sm'>Enter task details</p>
               </div>
             </div>
 
@@ -131,7 +129,7 @@ const AddEditTaskPage = () => {
               <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
                 <div className='space-y-2'>
                   <label className='text-xs font-bold uppercase tracking-widest text-dusk-blue/60 ml-1'>
-                    Objective Name
+                    Task Name
                   </label>
                   <input
                     type='text'
@@ -145,7 +143,7 @@ const AddEditTaskPage = () => {
 
                 <div className='space-y-2'>
                   <label className='text-xs font-bold uppercase tracking-widest text-dusk-blue/60 ml-1'>
-                    Deadline
+                    Due Date
                   </label>
                   <input
                     type='date'
@@ -160,7 +158,7 @@ const AddEditTaskPage = () => {
               <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
                 <div className='space-y-2'>
                   <label className='text-xs font-bold uppercase tracking-widest text-dusk-blue/60 ml-1'>
-                    Strategic Initiative (Project)
+                    Project
                   </label>
                   {/* <select
                     value={project_id}
@@ -181,7 +179,7 @@ const AddEditTaskPage = () => {
                     required
                     className='w-full bg-ink-black/50 border border-lavender-grey/10 rounded-xl py-3 px-4 text-alabaster-grey focus:outline-none focus:border-dusk-blue/50 transition-all appearance-none cursor-pointer'
                   >
-                    <option value=''>Select Initiative</option>
+                    <option value=''>Select Project</option>
                     {projects.map((p) => (
                       <option key={p.project_id} value={p.project_id}>
                         {" "}
@@ -194,7 +192,7 @@ const AddEditTaskPage = () => {
 
                 <div className='space-y-2'>
                   <label className='text-xs font-bold uppercase tracking-widest text-dusk-blue/60 ml-1'>
-                    Assigned Agent
+                    Assigned Member
                   </label>
                   <select
                     value={user_id}
@@ -202,7 +200,7 @@ const AddEditTaskPage = () => {
                     required
                     className='w-full bg-ink-black/50 border border-lavender-grey/10 rounded-xl py-3 px-4 text-alabaster-grey focus:outline-none focus:border-dusk-blue/50 transition-all appearance-none cursor-pointer'
                   >
-                    <option value=''>Select Agent</option>
+                    <option value=''>Select Member</option>
                     {members.map((m) => (
                       <option key={m.id} value={m.id}>
                         {m.name}
@@ -247,7 +245,7 @@ const AddEditTaskPage = () => {
                 className='w-full py-4 mt-4 bg-gradient-to-r from-dusk-blue to-lavender-grey text-white font-black rounded-xl shadow-lg hover:shadow-[0_0_30px_rgba(65,90,119,0.4)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 uppercase tracking-widest text-sm flex items-center justify-center gap-2'
               >
                 <Save className='w-4 h-4' />
-                {isEditing ? "Commit Changes" : "Initialize Objective"}
+                {isEditing ? "Save Changes" : "Create Task"}
               </button>
             </form>
           </div>

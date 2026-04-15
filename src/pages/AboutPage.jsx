@@ -2,8 +2,7 @@
  * About Page Component
  *
  * Provides information about the Nexus mission, core values, and the
- * technical architecture powering the platform. Includes animated
- * statistics and a breakdown of the tech stack.
+ * technical structure powering the platform.
  */
 import React from "react";
 import { motion } from "motion/react";
@@ -23,13 +22,12 @@ const About = () => {
               transition={{ duration: 0.8 }}
             >
               <h1 className='text-6xl md:text-8xl font-display font-bold text-alabaster-grey mb-8 tracking-tight leading-[0.9]'>
-                The Nexus <br />
+                About Nexus <br />
               </h1>
               <p className='text-xl md:text-2xl text-lavender-grey leading-relaxed font-light max-w-2xl'>
-                Nexus was forged in the digital void to provide the ultimate
-                command center for high-stakes collective intelligence. We
-                believe that the future of teamwork requires an interface that
-                is as synchronized as the teams using it.
+                Nexus is a digital system built to serve as a central command
+                center for team collaboration. It is designed for structured
+                work, clear coordination, and high-performance teamwork.
               </p>
             </motion.div>
           </div>
@@ -40,11 +38,11 @@ const About = () => {
       <section className='grid grid-cols-1 lg:grid-cols-2 gap-16'>
         <div className='space-y-8'>
           <h2 className='text-4xl font-display font-bold text-alabaster-grey tracking-tight'>
-            Core Directives
+            Core Principles
           </h2>
           <p className='text-lavender-grey leading-relaxed'>
-            Our philosophy is built on three pillars of digital collaboration:
-            Security, Architecture, and Intelligence.
+            Nexus is built on three main principles: security, structure, and
+            system intelligence.
           </p>
         </div>
 
@@ -55,12 +53,12 @@ const About = () => {
             </div>
             <div>
               <h3 className='text-xl font-bold text-alabaster-grey mb-2'>
-                Uncompromising Security
+                Security First
               </h3>
               <p className='text-lavender-grey text-sm leading-relaxed'>
-                Every byte of data in Nexus is protected by multi-layer
-                encryption and advanced role-based access protocols. Your
-                mission intelligence is safe with us.
+                All data in Nexus is protected with strong encryption and
+                role-based access control. Information is only available to
+                authorized users.
               </p>
             </div>
           </div>
@@ -71,12 +69,11 @@ const About = () => {
             </div>
             <div>
               <h3 className='text-xl font-bold text-alabaster-grey mb-2'>
-                Neural Architecture
+                System Architecture
               </h3>
               <p className='text-lavender-grey text-sm leading-relaxed'>
-                Our system is built on a modular, high-performance architecture
-                that adapts to your team's workflow, ensuring zero latency and
-                maximum efficiency.
+                Nexus uses a modular system design that supports fast
+                performance, smooth workflows, and scalable team collaboration.
               </p>
             </div>
           </div>

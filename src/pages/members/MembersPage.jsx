@@ -98,10 +98,10 @@ const MembersPage = () => {
       <div className='space-y-8'>
         <div className='text-center'>
           <h1 className='text-4xl font-black text-alabaster-grey tracking-tight flex items-center justify-center gap-3'>
-            <Users className='text-dusk-blue' /> Member Registry
+            <Users className='text-dusk-blue' /> Members
           </h1>
           <p className='text-lavender-grey mt-2'>
-            Authorized personnel with Nexus clearance
+            Registered users with system access
           </p>
         </div>
 
@@ -171,9 +171,9 @@ const MembersPage = () => {
 
                   <td className='px-6 py-4'>
                     <span
-                      className={`text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded ${member.role === "ADMIN" ? "bg-dusk-blue/10 text-dusk-blue" : "bg-lavender-grey/5 text-lavender-grey/40"}`}
+                      className={`text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded ${member.role === "ADMIN" ? "bg-dusk-blue/10 text-dusk-blue" : "bg-lavender-grey/5 text-lavender-grey/40"}`}
                     >
-                      {member.role}
+                      {member.role === "ADMIN" ? "Administrator" : "Member"}
                     </span>
                   </td>
 
@@ -214,7 +214,7 @@ const MembersPage = () => {
           {currentMembers.length === 0 && (
             <div className='text-center py-20'>
               <p className='text-lavender-grey/20 font-bold uppercase tracking-widest'>
-                No agents found in registry
+                No members found in registry
               </p>
             </div>
           )}

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import Layout from "../../components/Layout";
 import ApiService from "../../service/ApiService";
 import { useNavigate } from "react-router-dom";
-import { Trash2, Edit2, Briefcase, CirclePlus } from "lucide-react";
+import { Trash2, Edit2, Briefcase, CirclePlus, Eye } from "lucide-react";
 import { SearchBar, Pagination } from "../../components/DataControls";
 
 const ProjectPage = () => {
@@ -46,21 +46,19 @@ const ProjectPage = () => {
   // =========================
   const handleDeleteProject = async (id) => {
     try {
-      if (window.confirm("Are you sure you want to archive this initiative?")) {
+      if (window.confirm("Are you sure you want to delete this project?")) {
         await ApiService.deleteProject(id);
         getProjects();
-        showMessage("Project archived successfully.");
+        showMessage("Project deleted successfully.");
       }
     } catch (error) {
       showMessage(
-        error.response?.data?.message || "Error Deleting Project: " + error,
+        error.response?.data?.message || "Failed to delete Project: " + error,
       );
     }
   };
 
-  // =========================
   // SEARCH FILTER (FIXED)
-  // =========================
   const filteredProjects = projects.filter((project) => {
     const name = project.project_name?.toLowerCase() || "";
     const description = project.project_description?.toLowerCase() || "";
@@ -69,9 +67,7 @@ const ProjectPage = () => {
     return name.includes(search) || description.includes(search);
   });
 
-  // =========================
   // PAGINATION
-  // =========================
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredProjects.slice(
@@ -97,7 +93,7 @@ const ProjectPage = () => {
         <div className='flex flex-col md:flex-row md:items-center justify-between gap-4'>
           <div>
             <h1 className='text-4xl font-black text-alabaster-grey tracking-tight'>
-              Projects
+              Projects Management
             </h1>
             <p className='text-lavender-grey mt-1'>
               Strategic oversight of all active Nexus operations
@@ -105,19 +101,12 @@ const ProjectPage = () => {
           </div>
 
           {isAdmin && (
-            // <button
-            //   onClick={() => navigate("/projects/create")}
-            //   className='flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-dusk-blue to-lavender-grey text-white rounded-2xl'
-            // >
-            //   <CirclePlus className='w-6 h-6' />
-            //   New project
-            // </button>
             <button
               onClick={() => navigate("/projects/create")}
               className='flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-dusk-blue to-lavender-grey text-white font-bold rounded-2xl shadow-lg hover:shadow-[0_0_20px_rgba(65,90,119,0.4)] transition-all active:scale-95'
             >
               <CirclePlus className='w-5 h-5' />
-              Add Project
+              Create Project
             </button>
           )}
         </div>
@@ -129,9 +118,9 @@ const ProjectPage = () => {
               searchTerm={searchTerm}
               setSearchTerm={(val) => {
                 setSearchTerm(val);
-                setCurrentPage(1); // ✅ FIX: reset page on search
+                setCurrentPage(1);
               }}
-              placeholder='Search project by name or briefing...'
+              placeholder='Search projects by name or description...'
             />
           </div>
         </div>
@@ -145,11 +134,11 @@ const ProjectPage = () => {
                 className='p-6 rounded-2xl bg-prussian-blue/30'
               >
                 <h3 className='text-xl font-bold text-alabaster-grey'>
-                  {project.project_name || "Untitled Project"}
+                  {project.project_name}
                 </h3>
 
                 <p className='text-sm text-lavender-grey'>
-                  {project.project_description || "No description available"}
+                  {project.project_description}
                 </p>
 
                 <div className='flex justify-between mt-4'>
@@ -157,7 +146,7 @@ const ProjectPage = () => {
                     onClick={() => setSelectedProject(project)}
                     className='p-2 hover:text-blue-400 hover:bg-blue-400/10 rounded-lg transition-all'
                   >
-                    View
+                    <Eye className='h-4 w-4' />
                   </button>
 
                   {isAdmin && (
@@ -168,14 +157,14 @@ const ProjectPage = () => {
                           navigate(`/projects/update/${project.project_id}`)
                         }
                       >
-                        <Edit2 />
+                        <Edit2 className='h-4 w-4' />
                       </button>
 
                       <button
                         className='p-2 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-all'
                         onClick={() => handleDeleteProject(project.project_id)}
                       >
-                        <Trash2 />
+                        <Trash2 className='h-4 w-4' />
                       </button>
                     </div>
                   )}
@@ -185,7 +174,7 @@ const ProjectPage = () => {
           ) : (
             <div className='text-center py-20 bg-prussian-blue/20 rounded-3xl border border-dashed border-lavender-grey/10'>
               <p className='text-lavender-grey/20 font-bold uppercase tracking-widest'>
-                No projects found
+                No projects available
               </p>
             </div>
           )}
@@ -199,6 +188,7 @@ const ProjectPage = () => {
           paginate={handlePageChange}
         />
       </div>
+
       {/* Intelligence Brief Modal */}
       {selectedProject && (
         <div className='fixed inset-0 z-[100] flex items-center justify-center p-4'>
@@ -217,12 +207,10 @@ const ProjectPage = () => {
                 </div>
                 <div>
                   <h2 className='text-2xl font-black text-alabaster-grey tracking-tight'>
-                    {selectedProject.project_name ||
-                      selectedProject.name ||
-                      "Untitled Project"}
+                    {selectedProject.project_name || "No Project Name"}
                   </h2>
                   <p className='text-[10px] font-black uppercase tracking-[0.2em] text-dusk-blue'>
-                    Mission Intelligence Brief
+                    Project Overview
                   </p>
                 </div>
               </div>
@@ -234,8 +222,7 @@ const ProjectPage = () => {
                   </h4>
                   <p className='text-lavender-grey text-sm leading-relaxed'>
                     {selectedProject.project_description ||
-                      selectedProject.description ||
-                      "No description provided for this initiative."}
+                      "No description provided"}
                   </p>
                 </div>
               </div>
@@ -244,7 +231,7 @@ const ProjectPage = () => {
                 onClick={() => setSelectedProject(null)}
                 className='w-full mt-8 py-4 bg-dusk-blue/10 text-dusk-blue font-black rounded-xl hover:bg-dusk-blue/20 transition-all uppercase tracking-[0.2em] text-[10px] border border-dusk-blue/20 active:scale-[0.98]'
               >
-                Close Briefing
+                Close
               </button>
             </div>
           </div>

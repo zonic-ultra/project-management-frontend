@@ -1,7 +1,7 @@
 /**
  * Home Page Component
  *
- * The primary landing page for the Nexus Collaboration Suite.
+ * The main landing page for the Nexus Collaboration System.
  */
 
 import React, { useState, useEffect } from "react";
@@ -58,7 +58,7 @@ const HomePage = () => {
         });
       } catch (err) {
         console.error("Error fetching stats:", err);
-        setError("Failed to load live statistics.");
+        setError("Failed to load system data.");
         setStatsData({ users: "12", tasks: "48", projects: "8" });
       } finally {
         setLoading(false);
@@ -78,32 +78,32 @@ const HomePage = () => {
     {
       icon: Rocket,
       title: "Collective Velocity",
-      desc: "Accelerate team output with our high-performance synchronization engine.",
+      desc: "Helps teams work faster and stay in sync.",
     },
     {
       icon: Shield,
-      title: "Secure Nexus",
-      desc: "Enterprise-grade security protocols for protected team intelligence.",
+      title: "Secure System",
+      desc: "Protects data with strong security rules.",
     },
     {
       icon: Zap,
-      title: "Neural Sync",
-      desc: "Experience zero-latency collaboration with real-time objective tracking.",
+      title: "Real-Time Sync",
+      desc: "Keeps everything updated instantly across users.",
     },
     {
       icon: BarChart3,
       title: "Team Analytics",
-      desc: "Deep insights into collective momentum and individual contributions.",
+      desc: "Shows clear insights about team work and progress.",
     },
     {
       icon: Users,
-      title: "Unified Registry",
-      desc: "Seamlessly manage agent roles and permissions across the entire suite.",
+      title: "Member Management",
+      desc: "Manages users, roles, and permissions in one place.",
     },
     {
       icon: Layers,
-      title: "Adaptive Matrix",
-      desc: "A flexible collaboration framework that evolves with your team.",
+      title: "Flexible System",
+      desc: "Adapts easily to how your team works.",
     },
   ];
 
@@ -118,17 +118,16 @@ const HomePage = () => {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
             >
-              <h1 className='text-5xl md:text-8xl font-display font-bold mb-8 tracking-tight leading-[0.9] text-alabaster-grey'>
-                Synchronize Your Team in <br />
+              <h2 className='text-5xl md:text-8xl font-display font-bold mb-8 tracking-tight leading-[0.9] text-alabaster-grey'>
+                Work Together Better With <br />
                 <span className='bg-gradient-to-r from-dusk-blue via-lavender-grey to-dusk-blue bg-clip-text text-transparent animate-gradient'>
-                  The Nexus
+                  Nexus
                 </span>
-              </h1>
+              </h2>
 
               <p className='text-xl md:text-2xl text-lavender-grey max-w-2xl mb-12 leading-relaxed font-light'>
-                Experience the future of collective intelligence. Nexus combines
-                advanced neural sync, seamless teamwork, and futuristic design
-                to power your most ambitious initiatives.
+                A modern system for team collaboration. Nexus helps you manage
+                tasks, projects, and teamwork in one place.
               </p>
 
               {/* Stats Section with Rotating Light Effect */}
@@ -144,9 +143,7 @@ const HomePage = () => {
                       className='p-8 bg-ink-black/40 backdrop-blur-sm text-center group hover:bg-prussian-blue/20 transition-all relative overflow-hidden'
                     >
                       <div className='flex justify-center mb-6 relative'>
-                        {/* Rotating Light Container */}
                         <div className='relative w-12 h-12 flex items-center justify-center'>
-                          {/* Orbiting Glow Ring 1 */}
                           <motion.div
                             className='absolute w-12 h-12 border border-dusk-blue/40 rounded-full'
                             style={{ borderTopColor: "#3b82f6" }}
@@ -158,7 +155,6 @@ const HomePage = () => {
                             }}
                           />
 
-                          {/* Orbiting Glow Ring 2 (opposite direction) */}
                           <motion.div
                             className='absolute w-12 h-12 border border-dusk-blue/20 rounded-full'
                             animate={{ rotate: -360 }}
@@ -169,9 +165,8 @@ const HomePage = () => {
                             }}
                           />
 
-                          {/* Icon - Reduced Size */}
                           <div className='relative z-10'>
-                            <stat.icon className='w-7 h-7 text-dusk-blue drop-shadow-[0_0_6px_rgba(59,130,246,0.5)]' />
+                            <stat.icon className='w-7 h-7 text-dusk-blue' />
                           </div>
                         </div>
                       </div>
@@ -196,12 +191,12 @@ const HomePage = () => {
           </div>
         </section>
 
-        {/* Features Section - Core Capabilities */}
+        {/* Features Section */}
         <section className='py-20 px-4'>
           <div className='max-w-7xl mx-auto'>
             <div className='text-center mb-16'>
               <h2 className='text-3xl font-bold mb-4 text-alabaster-grey'>
-                Core Capabilities
+                Main Features
               </h2>
               <div className='w-20 h-1 bg-gradient-to-r from-dusk-blue to-lavender-grey mx-auto rounded-full'></div>
             </div>
