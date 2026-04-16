@@ -29,7 +29,7 @@ const ChangelogPage = () => {
     try {
       const response = await ApiService.getAllChangeLogs();
       if (response.status === 200) {
-        // Ensure we sort by the actual date object
+        // SORT: Latest (Newest) first using (b - a)
         const sortedLogs = (response.data || []).sort(
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
         );
@@ -55,6 +55,7 @@ const ChangelogPage = () => {
       setLogs((prevLogs) =>
         prevLogs
           .filter((log) => log.id !== id)
+          // Maintain LATEST first after deletion
           .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)),
       );
 
@@ -98,14 +99,10 @@ const ChangelogPage = () => {
 
             {/* Cool Refresh Button with futuristic loading effect */}
             <button onClick={fetchLogs} disabled={loading}>
-              {/* Subtle glow layer */}
-
               {loading ? (
                 <Activity className='w-4 h-4 text-green-400 animate-spin' />
               ) : (
-                <>
-                  <Activity className='w-4 h-4 opacity-0' />
-                </>
+                <Activity className='w-4 h-4 opacity-0' />
               )}
             </button>
           </div>
@@ -154,10 +151,10 @@ const ChangelogPage = () => {
                         ? new Date(log.createdAt).toLocaleString("en-US", {
                             month: "short",
                             day: "numeric",
-                            year: "numeric", // Added year
+                            year: "numeric",
                             hour: "numeric",
                             minute: "2-digit",
-                            hour12: true, // Ensures AM/PM format
+                            hour12: true, // PH/US style AM/PM
                           })
                         : "Unknown Date"}
                     </span>
