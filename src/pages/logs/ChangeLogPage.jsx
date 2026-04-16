@@ -148,14 +148,17 @@ const ChangelogPage = () => {
                     </div>
                     <span className='text-[10px] text-lavender-grey/70'>
                       {log.createdAt
-                        ? new Date(log.createdAt).toLocaleString("en-US", {
-                            timeZone: "Asia/Manila",
+                        ? new Date(
+                            log.createdAt +
+                              (log.createdAt.includes("Z") ? "" : "Z"),
+                          ).toLocaleString("en-US", {
+                            timeZone: "Asia/Manila", // Forces PH Time
                             month: "short",
                             day: "numeric",
                             year: "numeric",
                             hour: "numeric",
                             minute: "2-digit",
-                            hour12: true, // PH/US style AM/PM
+                            hour12: true,
                           })
                         : "Unknown Date"}
                     </span>
