@@ -28,7 +28,7 @@ const ChangelogPage = () => {
       const response = await ApiService.getAllChangeLogs();
       if (response.status === 200) {
         const sortedLogs = (response.data || []).sort(
-          (a, b) => new Date(b.changedAt) - new Date(a.changedAt),
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
         );
         setLogs(sortedLogs);
       }
@@ -41,16 +41,6 @@ const ChangelogPage = () => {
     fetchLogs();
   }, [fetchLogs]);
 
-  // Re-sort logs whenever the logs array changes (e.g. after delete)
-  useEffect(() => {
-    if (logs.length > 0) {
-      const sortedLogs = [...logs].sort(
-        (a, b) => new Date(b.changedAt) - new Date(a.changedAt),
-      );
-      setLogs(sortedLogs);
-    }
-  }, [logs]);
-
   const handleDeleteLog = async (id) => {
     if (!window.confirm("Are you sure you want to delete this log entry?"))
       return;
@@ -61,7 +51,7 @@ const ChangelogPage = () => {
       setLogs((prevLogs) =>
         prevLogs
           .filter((log) => log.id !== id)
-          .sort((a, b) => new Date(b.changedAt) - new Date(a.changedAt)),
+          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)),
       );
 
       showMessage("Log deleted successfully");
