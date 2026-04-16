@@ -91,7 +91,7 @@ const DashboardPage = () => {
         id: log.id,
         user: log.changeBy || "System",
         action: log.remarks || `Updated task status to ${log.newStatus}`,
-        time: new Date(log.changedAt).toLocaleString(),
+        time: new Date(log.createdAt).toLocaleString(),
         status: log.newStatus,
       }));
 

@@ -19,6 +19,7 @@ import ProfilePage from "./pages/profile/ProfilePage";
 import DashboardPage from "./pages/dashboard/DashboardPage";
 import TasksPage from "./pages/tasks/TasksPage";
 import ChangelogPage from "./pages/logs/ChangeLogPage";
+import PrivacyPage from "./pages/privacy/PrivacyPage";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route path='/login' element={<LoginPage />} />
         <Route path='/register' element={<RegisterPage />} />
         <Route path='/terms' element={<TermsPage />} />
+        <Route path='/privacy' element={<PrivacyPage />} />
 
         <Route
           path='/profile'
