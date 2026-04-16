@@ -29,6 +29,7 @@ const ChangelogPage = () => {
     try {
       const response = await ApiService.getAllChangeLogs();
       if (response.status === 200) {
+        // Ensure we sort by the actual date object
         const sortedLogs = (response.data || []).sort(
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
         );
@@ -153,8 +154,10 @@ const ChangelogPage = () => {
                         ? new Date(log.createdAt).toLocaleString("en-US", {
                             month: "short",
                             day: "numeric",
+                            year: "numeric", // Added year
                             hour: "numeric",
                             minute: "2-digit",
+                            hour12: true, // Ensures AM/PM format
                           })
                         : "Unknown Date"}
                     </span>
