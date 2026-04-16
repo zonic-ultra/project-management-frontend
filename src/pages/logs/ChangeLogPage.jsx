@@ -5,12 +5,12 @@ import React, { useState, useEffect, useCallback } from "react";
 import Layout from "../../components/Layout";
 import ApiService from "../../service/ApiService";
 import {
-  History,
   Trash2,
   User,
   Hash,
   MessageSquare,
   NotebookPen,
+  Activity, // ← Added for the button
 } from "lucide-react";
 import { SearchBar, Pagination } from "../../components/DataControls";
 import { useNavigate } from "react-router-dom";
@@ -20,10 +20,12 @@ const ChangelogPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [message, setMessage] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(false); // ← Added for button state
   const itemsPerPage = 12;
   const navigate = useNavigate();
 
   const fetchLogs = useCallback(async () => {
+    setLoading(true);
     try {
       const response = await ApiService.getAllChangeLogs();
       if (response.status === 200) {
@@ -34,6 +36,8 @@ const ChangelogPage = () => {
       }
     } catch (error) {
       showMessage("Error retrieving audit logs: " + error);
+    } finally {
+      setLoading(false);
     }
   }, []);
 
@@ -47,7 +51,6 @@ const ChangelogPage = () => {
     try {
       await ApiService.deleteChangeLog(id);
 
-      // Remove the deleted log and keep remaining logs sorted
       setLogs((prevLogs) =>
         prevLogs
           .filter((log) => log.id !== id)
@@ -102,9 +105,23 @@ const ChangelogPage = () => {
               Change Logs
             </h1>
 
-            <div className='p-3 sm:p-4 rounded-3xl bg-dusk-blue/10 border border-dusk-blue/20 text-dusk-blue mr-1'>
-              <History className='w-5 h-5 sm:w-6 sm:h-6' />
-            </div>
+            {/* Cool Refresh Button with futuristic loading effect */}
+            <button
+              onClick={fetchLogs}
+              disabled={loading}
+              className='group relative px-6 py-2.5 rounded-2xl bg-prussian-blue/50 border border-lavender-grey/10 text-lavender-grey text-xs font-bold uppercase tracking-widest hover:bg-dusk-blue/10 hover:text-dusk-blue hover:border-dusk-blue/30 transition-all duration-300 flex items-center gap-2 overflow-hidden disabled:cursor-not-allowed'
+            >
+              {/* Subtle glow layer */}
+              <div className='absolute inset-0 bg-gradient-to-r from-dusk-blue/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300' />
+
+              {loading ? (
+                <Activity className='w-4 h-4 text-green-400 animate-spin' />
+              ) : (
+                <>
+                  <Activity className='w-4 h-4' />
+                </>
+              )}
+            </button>
           </div>
 
           <p className='text-lavender-grey text-sm sm:text-base mt-1'>

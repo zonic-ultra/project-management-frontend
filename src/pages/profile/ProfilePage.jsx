@@ -9,7 +9,17 @@
 import React, { useState, useEffect } from "react";
 import Layout from "../../components/Layout";
 import ApiService from "../../service/ApiService";
-import { User, Mail, Lock, Shield, Save, Key, Eye, EyeOff } from "lucide-react";
+import {
+  User,
+  Mail,
+  Lock,
+  Shield,
+  Save,
+  Key,
+  Eye,
+  EyeOff,
+  Activity, // ← Added for refresh button
+} from "lucide-react";
 
 const ProfilePage = () => {
   const [activeTab, setActiveTab] = useState("overview");
@@ -32,16 +42,16 @@ const ProfilePage = () => {
 
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false); // ← Added for refresh
 
   useEffect(() => {
     fetchProfile();
   }, []);
 
   const fetchProfile = async () => {
+    setLoading(true);
     try {
       const response = await ApiService.getLoggedInUsersInfo();
-      // Handle various response structures: {data: user}, {user: user}, or direct user object
       const data = response.data || response.user || response;
       const user = data.user || data;
 
@@ -61,10 +71,12 @@ const ProfilePage = () => {
         "Failed to synchronize profile data.";
       setError(errorMsg);
       console.error("Profile sync error:", err);
+    } finally {
+      setLoading(false);
     }
   };
 
-  // Handle Profile Update (without form)
+  // Handle Profile Update
   const handleProfileUpdate = async () => {
     if (!userInfo.name.trim() || !userInfo.username.trim()) {
       setError("Name and Nexus ID are required.");
@@ -93,7 +105,7 @@ const ProfilePage = () => {
     }
   };
 
-  // Handle Password Change (without form)
+  // Handle Password Change
   const handlePasswordChange = async () => {
     if (passwordData.newPassword !== passwordData.confirmNewPassword) {
       setError("New password confirmation mismatch.");
@@ -114,7 +126,6 @@ const ProfilePage = () => {
       setMessage("Security credentials changed successfully.");
       setTimeout(() => setMessage(""), 4000);
 
-      // Clear password fields
       setPasswordData({
         currentPassword: "",
         newPassword: "",
@@ -145,7 +156,7 @@ const ProfilePage = () => {
   return (
     <Layout>
       <div className='max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 md:space-y-10 pb-20'>
-        {/* Header */}
+        {/* Header with Refresh Button */}
         <div className='flex flex-col md:flex-row md:items-center justify-between gap-6 pt-6 md:pt-0'>
           <div className='flex items-center gap-4'>
             <div className='p-3 rounded-2xl bg-gradient-to-br from-dusk-blue to-lavender-grey shadow-[0_0_20px_rgba(65,90,119,0.3)] shrink-0'>
@@ -160,6 +171,21 @@ const ProfilePage = () => {
               </p>
             </div>
           </div>
+
+          {/* Refresh Button - Only spinning Activity icon when loading */}
+          <button
+            onClick={fetchProfile}
+            disabled={loading}
+            className='group relative px-6 py-2.5 rounded-2xl bg-prussian-blue/50 border border-lavender-grey/10 text-lavender-grey text-xs font-bold uppercase tracking-widest hover:bg-dusk-blue/10 hover:text-dusk-blue hover:border-dusk-blue/30 transition-all duration-300 flex items-center gap-2 overflow-hidden disabled:cursor-not-allowed self-start md:self-auto'
+          >
+            {loading ? (
+              <Activity className='w-4 h-4 text-green-400 animate-spin' />
+            ) : (
+              <>
+                <Activity className='w-4 h-4' />
+              </>
+            )}
+          </button>
         </div>
 
         {/* Tabs Navigation */}
@@ -179,7 +205,7 @@ const ProfilePage = () => {
                     : "text-lavender-grey hover:text-alabaster-grey hover:bg-white/5"
                 }`}
               >
-                <tab.icon className='w-3.5 h-3\.5 sm:w-4 h-4' />
+                <tab.icon className='w-3.5 h-3.5 sm:w-4 h-4' />
                 {tab.label}
               </button>
             ))}
@@ -309,7 +335,6 @@ const ProfilePage = () => {
                     </div>
 
                     <div className='space-y-2'>
-                      {/* Label and Warning Row */}
                       <div className='flex items-center justify-between gap-1 px-1'>
                         <label className='text-[10px] font-bold uppercase tracking-widest text-lavender-grey/40'>
                           Email
@@ -319,7 +344,6 @@ const ProfilePage = () => {
                         </p>
                       </div>
 
-                      {/* Input Field */}
                       <div className='relative'>
                         <Mail className='absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-lavender-grey/20' />
                         <input
@@ -372,7 +396,6 @@ const ProfilePage = () => {
 
                 <div className='space-y-8 w-full'>
                   <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-                    {/* Current Password */}
                     <div className='space-y-2 md:col-span-2'>
                       <label className='text-[10px] font-bold uppercase tracking-widest text-lavender-grey/40 ml-1'>
                         Current Password
@@ -407,7 +430,6 @@ const ProfilePage = () => {
                       </div>
                     </div>
 
-                    {/* New Password */}
                     <div className='space-y-2'>
                       <label className='text-[10px] font-bold uppercase tracking-widest text-lavender-grey/40 ml-1'>
                         New Password
@@ -440,7 +462,6 @@ const ProfilePage = () => {
                       </div>
                     </div>
 
-                    {/* Confirm New Password */}
                     <div className='space-y-2'>
                       <label className='text-[10px] font-bold uppercase tracking-widest text-lavender-grey/40 ml-1'>
                         Confirm New Password

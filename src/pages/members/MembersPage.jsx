@@ -5,12 +5,12 @@ import {
   Trash2,
   User,
   Shield,
-  // Edit2,
   Eye,
   Users,
   X,
   Mail,
   Calendar,
+  Activity, // ← Added for refresh button
 } from "lucide-react";
 import { SearchBar, Pagination } from "../../components/DataControls";
 
@@ -19,10 +19,12 @@ const MembersPage = () => {
   const [search, setSearch] = useState("");
   const [message, setMessage] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedMember, setSelectedMember] = useState(null); // For modal
+  const [selectedMember, setSelectedMember] = useState(null);
+  const [loading, setLoading] = useState(false); // ← Added for button
   const membersPerPage = 10;
 
   const loadMembers = useCallback(async () => {
+    setLoading(true);
     try {
       const responseData = await ApiService.getAllMembers();
       if (responseData.status === 200) {
@@ -32,6 +34,8 @@ const MembersPage = () => {
       showMessage(
         error.response?.data?.message || "Error Loading Members: " + error,
       );
+    } finally {
+      setLoading(false);
     }
   }, []);
 
@@ -61,17 +65,14 @@ const MembersPage = () => {
     }
   };
 
-  // Open modal
   const openViewModal = (member) => {
     setSelectedMember(member);
   };
 
-  // Close modal
   const closeModal = () => {
     setSelectedMember(null);
   };
 
-  // Filter + Pagination
   const filteredMembers = members.filter(
     (member) =>
       member.name?.toLowerCase().includes(search.toLowerCase()) ||
@@ -96,13 +97,33 @@ const MembersPage = () => {
       )}
 
       <div className='space-y-8'>
-        <div className='text-center'>
-          <h1 className='text-4xl font-black text-alabaster-grey tracking-tight flex items-center justify-center gap-3'>
-            <Users className='text-dusk-blue' /> Members
-          </h1>
-          <p className='text-lavender-grey mt-2'>
-            Registered users with system access
-          </p>
+        {/* Header with Refresh Button */}
+        <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4'>
+          <div className='text-center sm:text-left'>
+            <h1 className='text-4xl font-black text-alabaster-grey tracking-tight flex items-center justify-center sm:justify-start gap-3'>
+              <Users className='text-dusk-blue' /> Members
+            </h1>
+            <p className='text-lavender-grey mt-2'>
+              Registered users with system access
+            </p>
+          </div>
+
+          {/* Cool Futuristic Refresh Button */}
+          <button
+            onClick={loadMembers}
+            disabled={loading}
+            className='group relative px-6 py-2.5 rounded-2xl bg-prussian-blue/50 border border-lavender-grey/10 text-lavender-grey text-xs font-bold uppercase tracking-widest hover:bg-dusk-blue/10 hover:text-dusk-blue hover:border-dusk-blue/30 transition-all duration-300 flex items-center gap-2 overflow-hidden disabled:cursor-not-allowed self-center sm:self-auto'
+          >
+            {/* Subtle glow layer */}
+            <div className='absolute inset-0 bg-gradient-to-r from-dusk-blue/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300' />
+            {loading ? (
+              <Activity className='w-4 h-4 text-green-400 animate-spin' />
+            ) : (
+              <>
+                <Activity className='w-4 h-4' />
+              </>
+            )}
+          </button>
         </div>
 
         <div className='max-w-xl mx-auto'>
@@ -277,7 +298,6 @@ const MembersPage = () => {
                 </div>
               </div>
 
-              {/* You can add more fields here if your member object has them (e.g. joined date, status, etc.) */}
               {selectedMember.createdAt && (
                 <div className='flex items-center gap-3 text-sm'>
                   <Calendar className='w-5 h-5 text-lavender-grey' />

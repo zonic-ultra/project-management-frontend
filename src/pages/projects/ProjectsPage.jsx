@@ -2,7 +2,14 @@ import React, { useState, useEffect, useCallback } from "react";
 import Layout from "../../components/Layout";
 import ApiService from "../../service/ApiService";
 import { useNavigate } from "react-router-dom";
-import { Trash2, Edit2, Briefcase, CirclePlus, Eye } from "lucide-react";
+import {
+  Trash2,
+  Edit2,
+  Briefcase,
+  CirclePlus,
+  Eye,
+  Activity,
+} from "lucide-react";
 import { SearchBar, Pagination } from "../../components/DataControls";
 
 const ProjectPage = () => {
@@ -11,6 +18,7 @@ const ProjectPage = () => {
   const [message, setMessage] = useState("");
   const [selectedProject, setSelectedProject] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(false);
   const itemsPerPage = 10;
 
   const navigate = useNavigate();
@@ -21,10 +29,8 @@ const ProjectPage = () => {
     setTimeout(() => setMessage(""), 4000);
   };
 
-  // =========================
-  // LOAD PROJECTS
-  // =========================
   const getProjects = useCallback(async () => {
+    setLoading(true);
     try {
       const responseData = await ApiService.getAllProjects();
       if (responseData.status === 200) {
@@ -34,6 +40,8 @@ const ProjectPage = () => {
       showMessage(
         error.response?.data?.message || "Error Getting Projects: " + error,
       );
+    } finally {
+      setLoading(false);
     }
   }, []);
 
@@ -41,9 +49,6 @@ const ProjectPage = () => {
     getProjects();
   }, [getProjects]);
 
-  // =========================
-  // DELETE PROJECT
-  // =========================
   const handleDeleteProject = async (id) => {
     try {
       if (window.confirm("Are you sure you want to delete this project?")) {
@@ -58,7 +63,6 @@ const ProjectPage = () => {
     }
   };
 
-  // SEARCH FILTER (FIXED)
   const filteredProjects = projects.filter((project) => {
     const name = project.project_name?.toLowerCase() || "";
     const description = project.project_description?.toLowerCase() || "";
@@ -67,7 +71,6 @@ const ProjectPage = () => {
     return name.includes(search) || description.includes(search);
   });
 
-  // PAGINATION
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredProjects.slice(
@@ -100,18 +103,35 @@ const ProjectPage = () => {
             </p>
           </div>
 
-          {isAdmin && (
+          <div className='flex items-center gap-3'>
+            {/* Loading Button - Spinning Activity Icon Only */}
             <button
-              onClick={() => navigate("/projects/create")}
-              className='flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-dusk-blue to-lavender-grey text-white font-bold rounded-2xl shadow-lg hover:shadow-[0_0_20px_rgba(65,90,119,0.4)] transition-all active:scale-95'
+              onClick={getProjects}
+              disabled={loading}
+              className='group relative px-6 py-2.5 rounded-2xl bg-prussian-blue/50 border border-lavender-grey/10 text-lavender-grey text-xs font-bold uppercase tracking-widest hover:bg-dusk-blue/10 hover:text-dusk-blue hover:border-dusk-blue/30 transition-all duration-300 flex items-center gap-2 overflow-hidden disabled:cursor-not-allowed'
             >
-              <CirclePlus className='w-5 h-5' />
-              Create Project
+              {loading ? (
+                <Activity className='w-4 h-4 text-green-400 animate-spin' />
+              ) : (
+                <>
+                  <Activity className='w-4 h-4' />
+                </>
+              )}
             </button>
-          )}
+
+            {isAdmin && (
+              <button
+                onClick={() => navigate("/projects/create")}
+                className='flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-dusk-blue to-lavender-grey text-white font-bold rounded-2xl shadow-lg hover:shadow-[0_0_20px_rgba(65,90,119,0.4)] transition-all active:scale-95'
+              >
+                <CirclePlus className='w-5 h-5' />
+                Create Project
+              </button>
+            )}
+          </div>
         </div>
 
-        {/* SEARCH (FIXED) */}
+        {/* SEARCH */}
         <div className='flex flex-col md:flex-row gap-4'>
           <div className='flex-1'>
             <SearchBar
@@ -196,7 +216,6 @@ const ProjectPage = () => {
             onClick={() => setSelectedProject(null)}
           />
           <div className='relative w-full max-w-lg p-8 rounded-3xl bg-prussian-blue border border-dusk-blue/20 shadow-[0_0_50px_rgba(65,90,119,0.1)] animate-in zoom-in-95 duration-300 overflow-hidden'>
-            {/* Decorative background element */}
             <div className='absolute -top-24 -right-24 w-48 h-48 bg-dusk-blue/5 rounded-full blur-3xl pointer-events-none' />
 
             <div className='relative z-10'>

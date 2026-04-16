@@ -175,8 +175,13 @@ const DashboardPage = () => {
             className='px-6 py-2 rounded-xl bg-prussian-blue/50 border border-lavender-grey/10 text-lavender-grey text-xs font-bold uppercase tracking-widest hover:bg-dusk-blue/10 hover:text-dusk-blue transition-all flex items-center gap-2'
             disabled={loading}
           >
-            <Activity className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
-            Refresh Data
+            {loading ? (
+              <Activity className='w-4 h-4 text-green-400 animate-spin' />
+            ) : (
+              <>
+                <Activity className='w-4 h-4' />
+              </>
+            )}
           </button>
         </div>
 

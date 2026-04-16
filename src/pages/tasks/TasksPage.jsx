@@ -15,6 +15,7 @@ import {
   User,
   Briefcase,
   CirclePlus,
+  Activity, // ← Added
 } from "lucide-react";
 import { SearchBar, Pagination } from "../../components/DataControls";
 
@@ -24,6 +25,7 @@ const TasksPage = () => {
   const [statusFilter, setStatusFilter] = useState("ALL");
   const [message, setMessage] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(false); // ← Added for refresh button
 
   // Modal states
   const [showStatusModal, setShowStatusModal] = useState(false);
@@ -37,12 +39,15 @@ const TasksPage = () => {
   const isAdmin = ApiService.isAdmin();
 
   const getTasks = useCallback(async () => {
+    setLoading(true);
     try {
       const responseData = await ApiService.getAllTasks();
       setTasks(responseData?.data || responseData || []);
     } catch (error) {
       console.error(error);
       showMessage("Failed to load tasks.");
+    } finally {
+      setLoading(false);
     }
   }, []);
 
@@ -55,7 +60,6 @@ const TasksPage = () => {
     setTimeout(() => setMessage(""), 4000);
   };
 
-  // ✅ FIXED: accept value from select
   const openStatusModal = (task, value) => {
     setSelectedTask(task);
     setNewStatus(value || task.taskStatus);
@@ -100,7 +104,6 @@ const TasksPage = () => {
     }
   };
 
-  // Filter tasks
   const filteredTasks = tasks.filter((task) => {
     const taskName = task.task_name || task.name || "";
     const username = task.username || task.assignedUser || "";
@@ -137,15 +140,33 @@ const TasksPage = () => {
             </h1>
             <p className='text-lavender-grey mt-1'>Manage and track tasks</p>
           </div>
-          {isAdmin && (
+
+          <div className='flex items-center gap-3'>
+            {/* Refresh Button - Only spinning Activity icon when loading */}
             <button
-              onClick={() => navigate("/tasks/create")}
-              className='flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-dusk-blue to-lavender-grey text-white font-bold rounded-2xl shadow-lg hover:shadow-[0_0_20px_rgba(65,90,119,0.4)] transition-all active:scale-95'
+              onClick={getTasks}
+              disabled={loading}
+              className='group relative px-6 py-2.5 rounded-2xl bg-prussian-blue/50 border border-lavender-grey/10 text-lavender-grey text-xs font-bold uppercase tracking-widest hover:bg-dusk-blue/10 hover:text-dusk-blue hover:border-dusk-blue/30 transition-all duration-300 flex items-center gap-2 overflow-hidden disabled:cursor-not-allowed'
             >
-              <CirclePlus className='w-5 h-5' />
-              Create Task
+              {loading ? (
+                <Activity className='w-4 h-4 text-green-400 animate-spin' />
+              ) : (
+                <>
+                  <Activity className='w-4 h-4' />
+                </>
+              )}
             </button>
-          )}
+
+            {isAdmin && (
+              <button
+                onClick={() => navigate("/tasks/create")}
+                className='flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-dusk-blue to-lavender-grey text-white font-bold rounded-2xl shadow-lg hover:shadow-[0_0_20px_rgba(65,90,119,0.4)] transition-all active:scale-95'
+              >
+                <CirclePlus className='w-5 h-5' />
+                Create Task
+              </button>
+            )}
+          </div>
         </div>
 
         {/* Search + Filter */}
