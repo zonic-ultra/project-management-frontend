@@ -170,11 +170,7 @@ const DashboardPage = () => {
               </p>
             </div>
           </div>
-          <button
-            onClick={fetchStats}
-            className='px-6 py-2 rounded-xl  text-lavender-grey text-xs font-bold uppercase tracking-widest hover:bg-dusk-blue/10 hover:text-dusk-blue transition-all flex items-center gap-2'
-            disabled={loading}
-          >
+          <button onClick={fetchStats} disabled={loading}>
             {loading ? (
               <Activity className='w-4 h-4 text-green-400 animate-spin' />
             ) : (

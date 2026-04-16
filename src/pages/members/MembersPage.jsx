@@ -109,11 +109,7 @@ const MembersPage = () => {
           </div>
 
           {/* Cool Futuristic Refresh Button */}
-          <button
-            onClick={loadMembers}
-            disabled={loading}
-            className='group relative px-6 py-2.5 rounded-2xl bg-prussian-blue/50 border border-lavender-grey/10 text-lavender-grey text-xs font-bold uppercase tracking-widest hover:bg-dusk-blue/10 hover:text-dusk-blue hover:border-dusk-blue/30 transition-all duration-300 flex items-center gap-2 overflow-hidden disabled:cursor-not-allowed self-center sm:self-auto'
-          >
+          <button onClick={loadMembers} disabled={loading}>
             {/* Subtle glow layer */}
             <div className='absolute inset-0 bg-gradient-to-r from-dusk-blue/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300' />
             {loading ? (

@@ -142,21 +142,6 @@ const TasksPage = () => {
           </div>
 
           <div className='flex items-center gap-3'>
-            {/* Refresh Button - Only spinning Activity icon when loading */}
-            <button
-              onClick={getTasks}
-              disabled={loading}
-              className='group relative px-6 py-2.5 rounded-2xl bg-prussian-blue/50 border border-lavender-grey/10 text-lavender-grey text-xs font-bold uppercase tracking-widest hover:bg-dusk-blue/10 hover:text-dusk-blue hover:border-dusk-blue/30 transition-all duration-300 flex items-center gap-2 overflow-hidden disabled:cursor-not-allowed'
-            >
-              {loading ? (
-                <Activity className='w-4 h-4 text-green-400 animate-spin' />
-              ) : (
-                <>
-                  <Activity className='w-4 h-4 opacity-0' />
-                </>
-              )}
-            </button>
-
             {isAdmin && (
               <button
                 onClick={() => navigate("/tasks/create")}
@@ -166,6 +151,17 @@ const TasksPage = () => {
                 Create Task
               </button>
             )}
+
+            {/* Refresh Button - Only spinning Activity icon when loading */}
+            <button className='ml-10' onClick={getTasks} disabled={loading}>
+              {loading ? (
+                <Activity className='w-4 h-4 text-green-400 animate-spin' />
+              ) : (
+                <>
+                  <Activity className='w-4 h-4 opacity-0' />
+                </>
+              )}
+            </button>
           </div>
         </div>
 

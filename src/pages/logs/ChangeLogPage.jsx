@@ -106,13 +106,8 @@ const ChangelogPage = () => {
             </h1>
 
             {/* Cool Refresh Button with futuristic loading effect */}
-            <button
-              onClick={fetchLogs}
-              disabled={loading}
-              className='group relative px-6 py-2.5 rounded-2xl bg-prussian-blue/50 border border-lavender-grey/10 text-lavender-grey text-xs font-bold uppercase tracking-widest hover:bg-dusk-blue/10 hover:text-dusk-blue hover:border-dusk-blue/30 transition-all duration-300 flex items-center gap-2 overflow-hidden disabled:cursor-not-allowed'
-            >
+            <button onClick={fetchLogs} disabled={loading}>
               {/* Subtle glow layer */}
-              <div className='absolute inset-0 bg-gradient-to-r from-dusk-blue/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300' />
 
               {loading ? (
                 <Activity className='w-4 h-4 text-green-400 animate-spin' />
