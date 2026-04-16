@@ -15,7 +15,7 @@ import {
   User,
   Briefcase,
   CirclePlus,
-  Activity, // ← Added
+  LoaderCircle, // ← Added
 } from "lucide-react";
 import { SearchBar, Pagination } from "../../components/DataControls";
 
@@ -155,10 +155,10 @@ const TasksPage = () => {
             {/* Refresh Button - Only spinning Activity icon when loading */}
             <button className='ml-10' onClick={getTasks} disabled={loading}>
               {loading ? (
-                <Activity className='w-4 h-4 text-green-400 animate-spin' />
+                <LoaderCircle className='w-4 h-4 text-green-400 animate-spin' />
               ) : (
                 <>
-                  <Activity className='w-4 h-4 opacity-0' />
+                  <LoaderCircle className='w-4 h-4 opacity-0' />
                 </>
               )}
             </button>

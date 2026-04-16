@@ -11,92 +11,6 @@ const LoginPage = () => {
 
   const navigate = useNavigate();
 
-  // const handleLogin = async (e) => {
-  //   e.preventDefault();
-
-  //   try {
-  //     const loginData = { username, password };
-  //     const data = await ApiService.loginUser(loginData);
-
-  //     console.log("Full Login Response:", data); // ← Check this
-
-  //     // Most common backend structures:
-  //     const token = data.data || data.accessToken || data.data?.data;
-  //     const role = data.role || data.data?.role || data.user?.role;
-
-  //     if (token) {
-  //       ApiService.saveToken(token);
-  //       if (role) ApiService.saveRole(role);
-
-  //       setMessage("Login successful! Redirecting...");
-
-  //       setTimeout(() => {
-  //         const isAdmin = ApiService.isAdmin();
-  //         if (isAdmin) {
-  //           navigate("/dashboard", { replace: true });
-  //         } else {
-  //           navigate("/", { replace: true });
-  //         }
-  //       }, 300);
-  //     } else {
-  //       showMessage("Login successful but no token received from server");
-  //       console.log("Received data:", data);
-  //     }
-  //   } catch (error) {
-  //     const errorMsg =
-  //       error.response?.data?.message || "Error during login: " + error.message;
-  //     showMessage(errorMsg);
-  //     console.error(error);
-  //   }
-  // };
-  // const handleLogin = async (e) => {
-  //   e.preventDefault();
-  //   setMessage("");
-
-  //   try {
-  //     const loginData = { username, password };
-  //     const data = await ApiService.loginUser(loginData);
-
-  //     console.log("Login Response:", data);
-
-  //     const token = data.token || data.data?.token;
-  //     let role = data.role || data.data?.role;
-
-  //     if (!token) {
-  //       setMessage("Login failed: No token received from server");
-  //       return;
-  //     }
-
-  //     ApiService.saveToken(token);
-
-  //     if (role) {
-  //       ApiService.saveRole(role); // This is crucial
-  //       console.log("Role saved:", role);
-  //     } else {
-  //       console.warn("No role received from backend");
-  //     }
-
-  //     setMessage("Login successful! Redirecting...");
-
-  //     setTimeout(() => {
-  //       const isAdmin = ApiService.isAdmin();
-  //       console.log("Redirecting as Admin?", isAdmin);
-
-  //       if (isAdmin) {
-  //         navigate("/dashboard", { replace: true });
-  //       } else {
-  //         navigate("/tasks", { replace: true }); // or "/"
-  //       }
-  //     }, 600);
-  //   } catch (error) {
-  //     const msg =
-  //       error.response?.data?.message ||
-  //       error.response?.data ||
-  //       "Invalid credentials";
-  //     showMessage(msg);
-  //   }
-  // };
-
   //!working version with enhanced logging and role handling
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -106,15 +20,10 @@ const LoginPage = () => {
       const loginData = { username, password };
       const data = await ApiService.loginUser(loginData);
 
-      console.log("=== FULL LOGIN RESPONSE ===", data);
-
       const token = data.token || data.data?.token;
 
       // FIXED: Extract role correctly from your backend response
       let role = data.role || data.data?.role || data.data; // ← data.data is 'ADMIN'
-
-      console.log("Extracted Token:", token ? "YES" : "NO");
-      console.log("Extracted Role:", role);
 
       if (!token) {
         setMessage("Login failed: No token received");
@@ -129,7 +38,6 @@ const LoginPage = () => {
         const roleStr =
           typeof role === "string" ? role : role.name || String(role);
         ApiService.saveRole(roleStr);
-        console.log("Role saved successfully:", roleStr.toUpperCase());
       } else {
         console.warn("No role found in response");
       }
@@ -138,9 +46,6 @@ const LoginPage = () => {
 
       setTimeout(() => {
         const isAdmin = ApiService.isAdmin();
-        console.log("Final isAdmin check:", isAdmin);
-        console.log("Role currently in localStorage:", ApiService.getRole());
-
         if (isAdmin) {
           navigate("/dashboard", { replace: true });
         } else {
