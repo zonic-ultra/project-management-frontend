@@ -78,7 +78,7 @@ const ChangelogPage = () => {
 
   const filteredLogs = logs.filter((log) => {
     const searchStr =
-      `${log.changeBy || ""} ${log.taskName || ""} ${log.changedAt || ""} ${log.remarks || ""} ${log.newStatus || ""} ${log.taskId || ""}`.toLowerCase();
+      `${log.changeBy || ""} ${log.taskName || ""} ${log.createdAt || ""} ${log.remarks || ""} ${log.newStatus || ""} ${log.taskId || ""}`.toLowerCase();
     return searchStr.includes(searchTerm.toLowerCase());
   });
 
@@ -157,7 +157,14 @@ const ChangelogPage = () => {
                       {log.newStatus}
                     </div>
                     <span className='text-[10px] text-lavender-grey/70'>
-                      {log.changedAt}
+                      {log.changedAt
+                        ? new Date(log.createdAt).toLocaleString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                            hour: "numeric",
+                            minute: "2-digit",
+                          })
+                        : "N/A"}
                     </span>
                   </div>
 
