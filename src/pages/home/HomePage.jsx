@@ -131,21 +131,23 @@ const HomePage = () => {
               </p>
 
               {/* Stats Section with Rotating Light Effect */}
-              <div className='max-w-5xl mx-auto mt-20'>
-                <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-lavender-grey/10 border border-lavender-grey/10 rounded-3xl overflow-hidden shadow-2xl'>
+              <div className='max-w-4xl mx-auto mt-16 px-4'>
+                <div className='grid grid-cols-3 gap-4'>
                   {stats.map((stat, idx) => (
                     <motion.div
                       key={idx}
-                      initial={{ opacity: 0 }}
-                      whileInView={{ opacity: 1 }}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
-                      transition={{ delay: idx * 0.1 }}
-                      className='p-8 bg-ink-black/40 backdrop-blur-sm text-center group hover:bg-prussian-blue/20 transition-all relative overflow-hidden'
+                      transition={{ delay: idx * 0.08 }}
+                      className='p-6 text-center group hover:bg-prussian-blue/10 transition-all relative overflow-hidden rounded-2xl'
                     >
-                      <div className='flex justify-center mb-6 relative'>
-                        <div className='relative w-12 h-12 flex items-center justify-center'>
+                      {/* Icon Container */}
+                      <div className='flex justify-center mb-5'>
+                        <div className='relative w-11 h-11 flex items-center justify-center'>
+                          {/* Spinning Borders */}
                           <motion.div
-                            className='absolute w-12 h-12 border border-dusk-blue/40 rounded-full'
+                            className='absolute w-11 h-11 border border-dusk-blue/30 rounded-full'
                             style={{ borderTopColor: "#3b82f6" }}
                             animate={{ rotate: 360 }}
                             transition={{
@@ -156,7 +158,7 @@ const HomePage = () => {
                           />
 
                           <motion.div
-                            className='absolute w-12 h-12 border border-dusk-blue/20 rounded-full'
+                            className='absolute w-11 h-11 border border-dusk-blue/20 rounded-full'
                             animate={{ rotate: -360 }}
                             transition={{
                               duration: 6,
@@ -165,16 +167,20 @@ const HomePage = () => {
                             }}
                           />
 
+                          {/* Icon */}
                           <div className='relative z-10'>
-                            <stat.icon className='w-7 h-7 text-dusk-blue' />
+                            <stat.icon className='w-6 h-6 text-dusk-blue' />
                           </div>
                         </div>
                       </div>
 
-                      <h3 className='text-3xl font-display font-bold text-alabaster-grey mb-1 group-hover:scale-110 transition-transform duration-500'>
+                      {/* Value */}
+                      <h3 className='text-3xl font-display font-bold text-alabaster-grey mb-1 group-hover:scale-105 transition-transform duration-500'>
                         {loading ? "..." : stat.value}
                       </h3>
-                      <p className='text-[10px] font-bold uppercase tracking-[0.2em] text-lavender-grey/40 group-hover:text-lavender-grey/60 transition-colors'>
+
+                      {/* Label */}
+                      <p className='text-[10px] font-bold uppercase tracking-[0.2em] text-lavender-grey/60 group-hover:text-lavender-grey/80 transition-colors'>
                         {stat.label}
                       </p>
                     </motion.div>
@@ -192,7 +198,7 @@ const HomePage = () => {
         </section>
 
         {/* Features Section */}
-        <section className='py-20 px-4'>
+        <section className='py-5 px-4'>
           <div className='max-w-7xl mx-auto'>
             <div className='text-center mb-16'>
               <h2 className='text-3xl font-bold mb-4 text-alabaster-grey'>

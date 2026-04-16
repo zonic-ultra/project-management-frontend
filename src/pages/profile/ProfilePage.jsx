@@ -483,7 +483,7 @@ const ProfilePage = () => {
                       className='flex-1 py-4 bg-prussian-blue border border-lavender-grey/10 text-alabaster-grey font-black rounded-xl hover:bg-lavender-grey/5 transition-all uppercase tracking-widest text-[10px] flex items-center justify-center gap-2 disabled:opacity-70'
                     >
                       <Key className='w-4 h-4' />
-                      {loading ? "Rotating..." : "Rotate Credentials"}
+                      {loading ? "Rotating..." : "Reset"}
                     </button>
                     <button
                       onClick={() => setActiveTab("overview")}

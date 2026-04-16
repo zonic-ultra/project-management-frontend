@@ -214,7 +214,7 @@ const TasksPage = () => {
                         {task.task_name}
                       </h3>
 
-                      <div className='flex flex-wrap items-center gap-4 mt-2 text-xs font-bold uppercase tracking-widest text-lavender-grey/20'>
+                      <div className='flex flex-wrap items-center gap-4 mt-2 text-xs font-bold uppercase tracking-widest text-lavender-grey/45'>
                         <span className='flex items-center gap-1.5'>
                           <User className='w-3 h-3' />
                           {task.username}

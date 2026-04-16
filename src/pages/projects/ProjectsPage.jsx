@@ -133,18 +133,18 @@ const ProjectPage = () => {
                 key={project.project_id}
                 className='p-6 rounded-2xl bg-prussian-blue/30'
               >
-                <h3 className='text-xl font-bold text-alabaster-grey'>
+                <h3 className='text-xl font-bold bg-gradient-to-r from-green-400 via-emerald-400 to-cyan-400 bg-clip-text text-transparent'>
                   {project.project_name}
                 </h3>
 
-                <p className='text-sm text-lavender-grey'>
+                <p className='text-sm text-lavender-grey mt-1'>
                   {project.project_description}
                 </p>
 
                 <div className='flex justify-between mt-4'>
                   <button
                     onClick={() => setSelectedProject(project)}
-                    className='p-2 hover:text-blue-400 hover:bg-blue-400/10 rounded-lg transition-all'
+                    className='p-2  text-lavender-grey/45 hover:text-blue-400 hover:bg-blue-400/10 rounded-lg transition-all'
                   >
                     <Eye className='h-4 w-4' />
                   </button>
@@ -152,7 +152,7 @@ const ProjectPage = () => {
                   {isAdmin && (
                     <div className='flex gap-5'>
                       <button
-                        className='p-2 hover:text-green-400 hover:bg-green-400/10 rounded-lg transition-all'
+                        className='p-2  text-lavender-grey/45 hover:text-green-400 hover:bg-green-400/10 rounded-lg transition-all'
                         onClick={() =>
                           navigate(`/projects/update/${project.project_id}`)
                         }
@@ -161,7 +161,7 @@ const ProjectPage = () => {
                       </button>
 
                       <button
-                        className='p-2 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-all'
+                        className='p-2  text-lavender-grey/45 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-all'
                         onClick={() => handleDeleteProject(project.project_id)}
                       >
                         <Trash2 className='h-4 w-4' />
@@ -189,7 +189,6 @@ const ProjectPage = () => {
         />
       </div>
 
-      {/* Intelligence Brief Modal */}
       {selectedProject && (
         <div className='fixed inset-0 z-[100] flex items-center justify-center p-4'>
           <div
@@ -206,8 +205,8 @@ const ProjectPage = () => {
                   <Briefcase className='w-6 h-6 text-dusk-blue' />
                 </div>
                 <div>
-                  <h2 className='text-2xl font-black text-alabaster-grey tracking-tight'>
-                    {selectedProject.project_name || "No Project Name"}
+                  <h2 className='text-xl font-bold bg-gradient-to-r from-green-400 via-emerald-400 to-cyan-400 bg-clip-text text-transparent'>
+                    {selectedProject.project_name}
                   </h2>
                   <p className='text-[10px] font-black uppercase tracking-[0.2em] text-dusk-blue'>
                     Project Overview

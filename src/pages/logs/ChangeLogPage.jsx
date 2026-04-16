@@ -1,9 +1,5 @@
 /**
  * Changelog Page Component (Mission Audit Logs)
- *
- * Provides a comprehensive history of all status changes and mission
- * updates. Admins can monitor the progression of all objectives
- * through this centralized audit interface.
  */
 import React, { useState, useEffect, useCallback } from "react";
 import Layout from "../../components/Layout";
@@ -11,12 +7,10 @@ import ApiService from "../../service/ApiService";
 import {
   History,
   Trash2,
-  Clock,
   User,
   Hash,
   MessageSquare,
-  //   AlertCircle,
-  //   CheckCircle2,
+  NotebookPen,
 } from "lucide-react";
 import { SearchBar, Pagination } from "../../components/DataControls";
 import { useNavigate } from "react-router-dom";
@@ -33,7 +27,10 @@ const ChangelogPage = () => {
     try {
       const response = await ApiService.getAllChangeLogs();
       if (response.status === 200) {
-        setLogs(response.data || []);
+        const sortedLogs = (response.data || []).sort(
+          (a, b) => new Date(b.changedAt) - new Date(a.changedAt),
+        );
+        setLogs(sortedLogs);
       }
     } catch (error) {
       showMessage("Error retrieving audit logs: " + error);
@@ -64,7 +61,7 @@ const ChangelogPage = () => {
 
   const filteredLogs = logs.filter((log) => {
     const searchStr =
-      `${log.changeBy} ${log.changedAt} ${log.remarks} ${log.newStatus} ${log.taskId}`.toLowerCase();
+      `${log.changeBy || ""} ${log.taskName || ""} ${log.changedAt || ""} ${log.remarks || ""} ${log.newStatus || ""} ${log.taskId || ""}`.toLowerCase();
     return searchStr.includes(searchTerm.toLowerCase());
   });
 
@@ -77,10 +74,8 @@ const ChangelogPage = () => {
     return date.toLocaleString("en-US", {
       month: "short",
       day: "numeric",
-      year: "numeric",
-      hour: "2-digit",
+      hour: "numeric",
       minute: "2-digit",
-      second: "2-digit",
     });
   };
 
@@ -92,21 +87,24 @@ const ChangelogPage = () => {
         </div>
       )}
 
-      <div className='space-y-8'>
-        <div className='flex flex-col md:flex-row md:items-center justify-between gap-4'>
-          <div>
+      <div className='space-y-4'>
+        {/* Header */}
+        <div className='space-y-3'>
+          <div className='flex items-center justify-between'>
             <h1 className='text-4xl font-black text-alabaster-grey tracking-tight'>
               Change Logs
             </h1>
-            <p className='text-lavender-grey mt-1'>
-              History of task updates and changes
-            </p>
-          </div>
-          <div className='p-3 rounded-2xl bg-dusk-blue/10 border border-dusk-blue/20 text-dusk-blue'>
-            <History className='w-8 h-8' />
-          </div>
-        </div>
 
+            <div className='p-3 sm:p-4 rounded-3xl bg-dusk-blue/10 border border-dusk-blue/20 text-dusk-blue mr-1'>
+              <History className='w-5 h-5 sm:w-6 sm:h-6' />
+            </div>
+          </div>
+
+          <p className='text-lavender-grey text-sm sm:text-base mt-1'>
+            History of task updates and changes
+          </p>
+        </div>
+        {/* Search */}
         <div className='w-full'>
           <SearchBar
             searchTerm={searchTerm}
@@ -114,93 +112,99 @@ const ChangelogPage = () => {
               setSearchTerm(val);
               setCurrentPage(1);
             }}
-            placeholder='Search by members, task ID, or remarks...'
+            placeholder='Search logs...'
           />
         </div>
-
-        <div className='grid gap-4'>
+        {/* Extremely Compact Cards for Small Screens */}
+        <div className='grid gap-2'>
           {currentItems.length > 0 ? (
             currentItems.map((log) => (
               <div
                 key={log.id}
-                className='group p-6 rounded-3xl bg-prussian-blue/30 border border-lavender-grey/10 hover:border-dusk-blue/40 transition-all duration-500 flex flex-col md:flex-row md:items-center justify-between gap-6'
+                className='group p-2.5 rounded-3xl bg-prussian-blue/30 border border-lavender-grey/10 hover:border-dusk-blue/40 transition-all'
               >
-                <div className='flex-1 space-y-4'>
-                  <div className='flex flex-wrap items-center gap-4'>
+                <div className='flex flex-col gap-1.5 ml-4 mt-1'>
+                  {/* Status + Date */}
+                  <div className='flex items-center gap-2'>
                     <div
-                      className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-[0.2em] ${
+                      className={`px-2 py-0.5 text-[8px] font-black uppercase tracking-widest rounded-full ${
                         log.newStatus === "DONE"
-                          ? "bg-green-400/10 text-green-400 border border-green-400/20"
+                          ? "bg-green-400/10 text-green-400"
                           : log.newStatus === "IN_PROGRESS"
-                            ? "bg-blue-400/10 text-blue-400 border border-blue-400/20"
-                            : "bg-yellow-400/10 text-yellow-400 border border-yellow-400/20"
+                            ? "bg-blue-400/10 text-blue-400"
+                            : "bg-yellow-400/10 text-yellow-400"
                       }`}
                     >
                       {log.newStatus}
                     </div>
-                    <span className='flex items-center gap-1.5 text-xs font-bold text-lavender-grey/40'>
-                      <Clock className='w-3 h-3' />
+                    <span className='text-[10px] text-lavender-grey/70'>
                       {formatDate(log.changedAt)}
                     </span>
                   </div>
 
-                  <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
-                    <div className='flex items-center gap-3'>
-                      <div className='p-2 rounded-lg bg-ink-black/50 text-dusk-blue'>
-                        <User className='w-4 h-4' />
+                  {/* TASK NAME + TASK ID */}
+                  <div className='flex flex-col lg:flex-row gap-3'>
+                    {/* Task Name */}
+                    <div className='flex items-start gap-2 flex-1'>
+                      <div className='p-1 bg-ink-black/70 rounded text-lavender-grey mt-0.5'>
+                        <NotebookPen className='w-3.5 h-3.5' />
                       </div>
-                      <div>
-                        <p className='text-[10px] uppercase tracking-widest text-lavender-grey/30 font-bold'>
-                          Action By
+                      <div className='flex-1 min-w-0'>
+                        <p className='text-[8px] uppercase tracking-widest text-lavender-grey/50'>
+                          TASK
                         </p>
-                        <p className='text-sm font-bold text-alabaster-grey'>
-                          {log.changeBy}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className='flex items-center gap-3'>
-                      <div className='p-2 rounded-lg bg-ink-black/50 text-lavender-grey'>
-                        <Hash className='w-4 h-4' />
-                      </div>
-                      <div>
-                        <p className='text-[10px] uppercase tracking-widest text-lavender-grey/30 font-bold'>
-                          Task ID
-                        </p>
-                        <p className='text-sm font-bold text-alabaster-grey'>
-                          #{log.taskId}
+                        <p className='text-[13px] font-semibold  text-lavender-grey/45 leading-none'>
+                          {log.taskName}
                         </p>
                       </div>
                     </div>
 
-                    <div className='flex items-start gap-3'>
-                      <div className='p-2 rounded-lg bg-ink-black/50 text-lavender-grey mt-1'>
-                        <MessageSquare className='w-4 h-4' />
+                    {/* Task ID */}
+                    <div className='flex items-start gap-2 lg:w-44'>
+                      <div className='p-1 bg-ink-black/70 rounded text-lavender-grey mt-0.5'>
+                        <Hash className='w-3.5 h-3.5' />
                       </div>
                       <div>
-                        <p className='text-[10px] uppercase tracking-widest text-lavender-grey/30 font-bold'>
-                          Remarks
+                        <p className='text-[8px] uppercase tracking-widest text-lavender-grey/50'>
+                          ID
                         </p>
-                        <p className='text-sm text-lavender-grey italic line-clamp-2'>
-                          "{log.remarks}"
+                        <p className='text-[10px] font-semibold text-lavender-grey/45 leading-none'>
+                          {log.taskId}
                         </p>
                       </div>
                     </div>
                   </div>
+
+                  {/* Remarks */}
+                  <div className='flex items-start gap-2 pl-0.5'>
+                    <MessageSquare className='w-3.5 h-3.5 text-lavender-grey mt-1 flex-shrink-0' />
+                    <p className='text-xs  text-lavender-grey/45 italic line-clamp-1'>
+                      {log.remarks || "No remarks"}
+                    </p>
+                  </div>
                 </div>
 
-                <button
-                  onClick={() => handleDeleteLog(log.id)}
-                  className='p-3 text-lavender-grey/20 hover:text-red-400 hover:bg-red-400/10 rounded-xl transition-all self-end md:self-center'
-                  title='Purge Log Entry'
-                >
-                  <Trash2 className='w-5 h-5' />
-                </button>
+                {/* Action By + Delete */}
+                <div className='flex justify-between items-center mt-3 ml-4 pt-2 border-t border-lavender-grey/10'>
+                  <div className='flex items-center gap-2'>
+                    <User className='w-3.5 h-3.5 text-dusk-blue' />
+                    <p className='text-sm font-semibold text-lavender-grey/45'>
+                      {log.changeBy}
+                    </p>
+                  </div>
+
+                  <button
+                    onClick={() => handleDeleteLog(log.id)}
+                    className='p-1.5 .-mr-1 text-lavender-grey/40 hover:text-red-400 hover:bg-red-400/10 rounded-lg mr-4'
+                  >
+                    <Trash2 className='w-4 h-4' />
+                  </button>
+                </div>
               </div>
             ))
           ) : (
-            <div className='text-center py-20 bg-prussian-blue/20 rounded-3xl border border-dashed border-lavender-grey/10'>
-              <p className='text-lavender-grey/20 font-bold uppercase tracking-widest'>
+            <div className='text-center py-8 bg-prussian-blue/20 rounded-3xl border border-dashed border-lavender-grey/10'>
+              <p className='text-lavender-grey/30 text-sm font-bold'>
                 No logs found
               </p>
             </div>

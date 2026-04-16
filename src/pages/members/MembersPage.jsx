@@ -187,14 +187,6 @@ const MembersPage = () => {
                         <Eye className='w-4 h-4' />
                       </button>
 
-                      {/* <Link
-                        to={`/update_member/${member.id}`}
-                        className='p-2 text-lavender-grey/20 hover:text-green-400 hover:bg-green-400/10 rounded-lg transition-all'
-                        title='Edit Agent'
-                      >
-                        <Edit2 className='w-4 h-4' />
-                      </Link> */}
-
                       {member.role !== "ADMIN" && (
                         <button
                           onClick={() => handleDelete(member.id)}

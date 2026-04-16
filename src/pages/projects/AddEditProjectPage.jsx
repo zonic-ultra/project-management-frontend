@@ -6,7 +6,7 @@ import ApiService from "../../service/ApiService";
 
 const AddEditProjectPage = () => {
   const navigate = useNavigate();
-  const { project_id } = useParams(); // /update/:id
+  const { project_id } = useParams();
 
   const [message, setMessage] = useState("");
 
@@ -15,7 +15,6 @@ const AddEditProjectPage = () => {
     setTimeout(() => setMessage(""), 4000);
   };
 
-  // FIXED STATE (matches UI)
   const [project_name, setProjectName] = useState("");
   const [project_description, setProjectDescription] = useState("");
 
