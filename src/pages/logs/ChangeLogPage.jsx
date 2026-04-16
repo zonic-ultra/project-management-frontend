@@ -157,14 +157,14 @@ const ChangelogPage = () => {
                       {log.newStatus}
                     </div>
                     <span className='text-[10px] text-lavender-grey/70'>
-                      {log.changedAt
+                      {log.createdAt
                         ? new Date(log.createdAt).toLocaleString("en-US", {
                             month: "short",
                             day: "numeric",
                             hour: "numeric",
                             minute: "2-digit",
                           })
-                        : "N/A"}
+                        : "Unknown Date"}
                     </span>
                   </div>
 
