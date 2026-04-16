@@ -91,7 +91,19 @@ const DashboardPage = () => {
         id: log.id,
         user: log.changeBy || "System",
         action: log.remarks || `Updated task status to ${log.newStatus}`,
-        time: new Date(log.createdAt).toLocaleString(),
+        time: log.createdAt
+          ? new Date(
+              log.createdAt + (log.createdAt.includes("Z") ? "" : "Z"),
+            ).toLocaleString("en-US", {
+              timeZone: "Asia/Manila", // Forces PH Time
+              month: "short",
+              day: "numeric",
+              year: "numeric",
+              hour: "numeric",
+              minute: "2-digit",
+              hour12: true,
+            })
+          : "Unknown Date",
         status: log.newStatus,
       }));
 
