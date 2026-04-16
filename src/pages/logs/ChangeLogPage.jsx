@@ -41,12 +41,29 @@ const ChangelogPage = () => {
     fetchLogs();
   }, [fetchLogs]);
 
+  // Re-sort logs whenever the logs array changes (e.g. after delete)
+  useEffect(() => {
+    if (logs.length > 0) {
+      const sortedLogs = [...logs].sort(
+        (a, b) => new Date(b.changedAt) - new Date(a.changedAt),
+      );
+      setLogs(sortedLogs);
+    }
+  }, [logs]);
+
   const handleDeleteLog = async (id) => {
     if (!window.confirm("Are you sure you want to delete this log entry?"))
       return;
     try {
       await ApiService.deleteChangeLog(id);
-      setLogs(logs.filter((log) => log.id !== id));
+
+      // Remove the deleted log and keep remaining logs sorted
+      setLogs((prevLogs) =>
+        prevLogs
+          .filter((log) => log.id !== id)
+          .sort((a, b) => new Date(b.changedAt) - new Date(a.changedAt)),
+      );
+
       showMessage("Log deleted successfully");
       navigate("/logs");
     } catch (error) {
@@ -104,6 +121,7 @@ const ChangelogPage = () => {
             History of task updates and changes
           </p>
         </div>
+
         {/* Search */}
         <div className='w-full'>
           <SearchBar
@@ -115,7 +133,8 @@ const ChangelogPage = () => {
             placeholder='Search logs...'
           />
         </div>
-        {/* Extremely Compact Cards for Small Screens */}
+
+        {/* Logs List */}
         <div className='grid gap-2'>
           {currentItems.length > 0 ? (
             currentItems.map((log) => (
@@ -153,7 +172,7 @@ const ChangelogPage = () => {
                         <p className='text-[8px] uppercase tracking-widest text-lavender-grey/50'>
                           TASK
                         </p>
-                        <p className='text-[13px] font-semibold  text-lavender-grey/45 leading-none'>
+                        <p className='text-[13px] font-semibold text-lavender-grey/45 leading-none'>
                           {log.taskName}
                         </p>
                       </div>
@@ -178,7 +197,7 @@ const ChangelogPage = () => {
                   {/* Remarks */}
                   <div className='flex items-start gap-2 pl-0.5'>
                     <MessageSquare className='w-3.5 h-3.5 text-lavender-grey mt-1 flex-shrink-0' />
-                    <p className='text-xs  text-lavender-grey/45 italic line-clamp-1'>
+                    <p className='text-xs text-lavender-grey/45 italic line-clamp-1'>
                       {log.remarks || "No remarks"}
                     </p>
                   </div>
