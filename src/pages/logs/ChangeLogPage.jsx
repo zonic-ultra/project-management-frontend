@@ -149,6 +149,7 @@ const ChangelogPage = () => {
                     <span className='text-[10px] text-lavender-grey/70'>
                       {log.createdAt
                         ? new Date(log.createdAt).toLocaleString("en-US", {
+                            timeZone: "Asia/Manila",
                             month: "short",
                             day: "numeric",
                             year: "numeric",
