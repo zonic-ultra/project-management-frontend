@@ -10,6 +10,7 @@ import {
   Home,
   Info,
   Logs,
+  UserCog,
 } from "lucide-react";
 // import { i } from "motion/react-client";
 
@@ -68,7 +69,7 @@ const Sidebar = ({ isMobile = false, onClose }) => {
                   : "hover:bg-white/5 text-alabaster-grey hover:text-white"
               }`}
             >
-              <CheckSquare className='w-5 h-5' />
+              <UserCog className='w-5 h-5' />
               Profile
             </Link>
           )}
