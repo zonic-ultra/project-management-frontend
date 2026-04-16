@@ -1,16 +1,16 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import Layout from "../../components/Layout";
 import ApiService from "../../service/ApiService";
 import {
   Trash2,
   User,
   Shield,
-  Eye,
+  Eye, // ← This icon component
   Users,
   X,
   Mail,
   Calendar,
-  Activity, // ← Added for refresh button
+  Activity,
 } from "lucide-react";
 import { SearchBar, Pagination } from "../../components/DataControls";
 
@@ -20,7 +20,7 @@ const MembersPage = () => {
   const [message, setMessage] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedMember, setSelectedMember] = useState(null);
-  const [loading, setLoading] = useState(false); // ← Added for button
+  const [loading, setLoading] = useState(false);
   const membersPerPage = 10;
 
   const loadMembers = useCallback(async () => {
@@ -73,12 +73,16 @@ const MembersPage = () => {
     setSelectedMember(null);
   };
 
-  const filteredMembers = members.filter(
-    (member) =>
-      member.name?.toLowerCase().includes(search.toLowerCase()) ||
-      member.username?.toLowerCase().includes(search.toLowerCase()),
-  );
+  // Fix: Memoize filtered results to keep pagination index stable
+  const filteredMembers = useMemo(() => {
+    return members.filter(
+      (member) =>
+        member.name?.toLowerCase().includes(search.toLowerCase()) ||
+        member.username?.toLowerCase().includes(search.toLowerCase()),
+    );
+  }, [members, search]);
 
+  // Fix: Pagination Calculations
   const indexOfLast = currentPage * membersPerPage;
   const indexOfFirst = indexOfLast - membersPerPage;
   const currentMembers = filteredMembers.slice(indexOfFirst, indexOfLast);
@@ -97,7 +101,6 @@ const MembersPage = () => {
       )}
 
       <div className='space-y-8'>
-        {/* Header with Refresh Button */}
         <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4'>
           <div className='text-center sm:text-left'>
             <h1 className='text-4xl font-black text-alabaster-grey tracking-tight flex items-center justify-center sm:justify-start gap-3'>
@@ -108,16 +111,16 @@ const MembersPage = () => {
             </p>
           </div>
 
-          {/* Cool Futuristic Refresh Button */}
-          <button onClick={loadMembers} disabled={loading}>
-            {/* Subtle glow layer */}
+          <button
+            onClick={loadMembers}
+            disabled={loading}
+            className='relative group p-2'
+          >
             <div className='absolute inset-0 bg-gradient-to-r from-dusk-blue/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300' />
             {loading ? (
               <Activity className='w-4 h-4 text-green-400 animate-spin' />
             ) : (
-              <>
-                <Activity className='w-4 h-4 opacity-0' />
-              </>
+              <Activity className='w-4 h-4 text-lavender-grey' />
             )}
           </button>
         </div>
@@ -127,7 +130,7 @@ const MembersPage = () => {
             searchTerm={search}
             setSearchTerm={(val) => {
               setSearch(val);
-              setCurrentPage(1);
+              setCurrentPage(1); // Fix: Reset to page 1 on search
             }}
             placeholder='Search members by name or email...'
           />
@@ -168,7 +171,11 @@ const MembersPage = () => {
                   <td className='px-6 py-4'>
                     <div className='flex items-center gap-3'>
                       <div
-                        className={`w-8 h-8 rounded-lg flex items-center justify-center ${member.role === "ADMIN" ? "bg-dusk-blue/10 text-dusk-blue" : "bg-lavender-grey/5 text-lavender-grey/40"}`}
+                        className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+                          member.role === "ADMIN"
+                            ? "bg-dusk-blue/10 text-dusk-blue"
+                            : "bg-lavender-grey/5 text-lavender-grey/40"
+                        }`}
                       >
                         {member.role === "ADMIN" ? (
                           <Shield className='w-4 h-4' />
@@ -188,7 +195,11 @@ const MembersPage = () => {
 
                   <td className='px-6 py-4'>
                     <span
-                      className={`text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded ${member.role === "ADMIN" ? "bg-dusk-blue/10 text-dusk-blue" : "bg-lavender-grey/5 text-lavender-grey/40"}`}
+                      className={`text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded ${
+                        member.role === "ADMIN"
+                          ? "bg-dusk-blue/10 text-dusk-blue"
+                          : "bg-lavender-grey/5 text-lavender-grey/40"
+                      }`}
                     >
                       {member.role === "ADMIN" ? "Administrator" : "Member"}
                     </span>
@@ -198,10 +209,11 @@ const MembersPage = () => {
                     <div className='flex items-center justify-center gap-2'>
                       <button
                         onClick={() => openViewModal(member)}
-                        className='p-2 text-lavender-grey/20  hover:text-blue-400 hover:bg-blue-400/10 rounded-lg transition-all'
+                        className='p-2 text-lavender-grey/20 hover:text-blue-400 hover:bg-blue-400/10 rounded-lg transition-all'
                         title='View Profile'
                       >
-                        <Eye className='w-4 h-4' />
+                        <Eye className='w-4 h-4' />{" "}
+                        {/* Restored Eye Component */}
                       </button>
 
                       {member.role !== "ADMIN" && (
@@ -241,11 +253,14 @@ const MembersPage = () => {
       {selectedMember && (
         <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4'>
           <div className='bg-prussian-blue/95 border border-lavender-grey/20 rounded-3xl w-full max-w-md overflow-hidden shadow-2xl'>
-            {/* Modal Header */}
             <div className='flex items-center justify-between px-6 py-5 border-b border-lavender-grey/10'>
               <div className='flex items-center gap-3'>
                 <div
-                  className={`w-10 h-10 rounded-2xl flex items-center justify-center ${selectedMember.role === "ADMIN" ? "bg-dusk-blue/10 text-dusk-blue" : "bg-lavender-grey/10 text-lavender-grey"}`}
+                  className={`w-10 h-10 rounded-2xl flex items-center justify-center ${
+                    selectedMember.role === "ADMIN"
+                      ? "bg-dusk-blue/10 text-dusk-blue"
+                      : "bg-lavender-grey/10 text-lavender-grey"
+                  }`}
                 >
                   {selectedMember.role === "ADMIN" ? (
                     <Shield className='w-5 h-5' />
@@ -270,7 +285,6 @@ const MembersPage = () => {
               </button>
             </div>
 
-            {/* Modal Body */}
             <div className='p-6 space-y-6'>
               <div className='flex items-center gap-3 text-sm'>
                 <Mail className='w-5 h-5 text-lavender-grey' />
@@ -287,7 +301,11 @@ const MembersPage = () => {
                 <div>
                   <p className='text-lavender-grey/60 text-xs'>ROLE</p>
                   <span
-                    className={`inline-block text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full ${selectedMember.role === "ADMIN" ? "bg-dusk-blue/10 text-dusk-blue" : "bg-lavender-grey/10 text-lavender-grey"}`}
+                    className={`inline-block text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full ${
+                      selectedMember.role === "ADMIN"
+                        ? " text-green-400 bg-green-400/10"
+                        : "bg-lavender-grey/10 text-lavender-grey"
+                    }`}
                   >
                     {selectedMember.role || "MEMBER"}
                   </span>
@@ -307,7 +325,6 @@ const MembersPage = () => {
               )}
             </div>
 
-            {/* Modal Footer */}
             <div className='px-6 py-4 border-t border-lavender-grey/10 flex justify-end'>
               <button
                 onClick={closeModal}

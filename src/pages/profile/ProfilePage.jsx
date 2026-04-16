@@ -201,7 +201,7 @@ const ProfilePage = () => {
                     : "text-lavender-grey hover:text-alabaster-grey hover:bg-white/5"
                 }`}
               >
-                <tab.icon className='w-3.5 h-3.5 sm:w-4 h-4' />
+                <tab.icon className='w-3.5 h-3.5 sm:w-4 sm:h-4' />
                 {tab.label}
               </button>
             ))}
