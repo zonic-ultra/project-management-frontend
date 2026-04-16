@@ -17,6 +17,12 @@ const ProjectPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [message, setMessage] = useState("");
   const [selectedProject, setSelectedProject] = useState(null);
+
+  // ✅ DELETE MODAL STATES (ADDED)
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selectedProjectForDelete, setSelectedProjectForDelete] =
+    useState(null);
+
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const itemsPerPage = 10;
@@ -49,13 +55,22 @@ const ProjectPage = () => {
     getProjects();
   }, [getProjects]);
 
-  const handleDeleteProject = async (id) => {
+  // ✅ OPEN DELETE MODAL
+  const openDeleteModal = (project) => {
+    setSelectedProjectForDelete(project);
+    setShowDeleteModal(true);
+  };
+
+  // ✅ CONFIRM DELETE
+  const handleDeleteProject = async () => {
+    if (!selectedProjectForDelete) return;
+
     try {
-      if (window.confirm("Are you sure you want to delete this project?")) {
-        await ApiService.deleteProject(id);
-        getProjects();
-        showMessage("Project deleted successfully.");
-      }
+      await ApiService.deleteProject(selectedProjectForDelete.project_id);
+      getProjects();
+      showMessage("Project deleted successfully.");
+      setShowDeleteModal(false);
+      setSelectedProjectForDelete(null);
     } catch (error) {
       showMessage(
         error.response?.data?.message || "Failed to delete Project: " + error,
@@ -113,14 +128,12 @@ const ProjectPage = () => {
                 Create Project
               </button>
             )}
-            {/* Loading Button - Spinning Activity Icon Only */}
+
             <button className='ml-10' onClick={getProjects} disabled={loading}>
               {loading ? (
                 <Activity className='w-4 h-4 text-green-400 animate-spin' />
               ) : (
-                <>
-                  <Activity className='w-4 h-4 opacity-0' />
-                </>
+                <Activity className='w-4 h-4 opacity-0' />
               )}
             </button>
           </div>
@@ -159,7 +172,7 @@ const ProjectPage = () => {
                 <div className='flex justify-between mt-4'>
                   <button
                     onClick={() => setSelectedProject(project)}
-                    className='p-2  text-lavender-grey/45 hover:text-blue-400 hover:bg-blue-400/10 rounded-lg transition-all'
+                    className='p-2 text-lavender-grey/45 hover:text-blue-400 hover:bg-blue-400/10 rounded-lg transition-all'
                   >
                     <Eye className='h-4 w-4' />
                   </button>
@@ -167,7 +180,7 @@ const ProjectPage = () => {
                   {isAdmin && (
                     <div className='flex gap-5'>
                       <button
-                        className='p-2  text-lavender-grey/45 hover:text-green-400 hover:bg-green-400/10 rounded-lg transition-all'
+                        className='p-2 text-lavender-grey/45 hover:text-green-400 hover:bg-green-400/10 rounded-lg transition-all'
                         onClick={() =>
                           navigate(`/projects/update/${project.project_id}`)
                         }
@@ -175,9 +188,10 @@ const ProjectPage = () => {
                         <Edit2 className='h-4 w-4' />
                       </button>
 
+                      {/* ✅ OPEN MODAL INSTEAD OF DIRECT DELETE */}
                       <button
-                        className='p-2  text-lavender-grey/45 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-all'
-                        onClick={() => handleDeleteProject(project.project_id)}
+                        className='p-2 text-lavender-grey/45 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-all'
+                        onClick={() => openDeleteModal(project)}
                       >
                         <Trash2 className='h-4 w-4' />
                       </button>
@@ -204,6 +218,7 @@ const ProjectPage = () => {
         />
       </div>
 
+      {/* VIEW MODAL */}
       {selectedProject && (
         <div className='fixed inset-0 z-[100] flex items-center justify-center p-4'>
           <div
@@ -245,6 +260,41 @@ const ProjectPage = () => {
                 className='w-full mt-8 py-4 bg-dusk-blue/10 text-dusk-blue font-black rounded-xl hover:bg-dusk-blue/20 transition-all uppercase tracking-[0.2em] text-[10px] border border-dusk-blue/20 active:scale-[0.98]'
               >
                 Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ✅ DELETE MODAL (NEW) */}
+      {showDeleteModal && selectedProjectForDelete && (
+        <div className='fixed inset-0 z-[150] flex items-center justify-center p-4 bg-ink-black/80 backdrop-blur-sm'>
+          <div className='w-full max-w-sm p-6 rounded-3xl bg-prussian-blue border border-red-400/10 shadow-2xl text-center'>
+            <Trash2 className='w-8 h-8 text-red-400 mx-auto mb-4' />
+            <h3 className='text-l font-black text-alabaster-grey'>
+              Delete this project?
+            </h3>
+            <p className='text-lavender-grey mt-2'>
+              This action cannot be undone:
+              <br />
+              <strong className='block mt-1'>
+                "{selectedProjectForDelete.project_name}"
+              </strong>
+            </p>
+
+            <div className='flex gap-3 mt-6'>
+              <button
+                onClick={() => setShowDeleteModal(false)}
+                className='flex-1 py-2 bg-lavender-grey/5 hover:bg-lavender-grey/15 text-lavender-grey font-black rounded-2xl transition-colors'
+              >
+                Cancel
+              </button>
+
+              <button
+                onClick={handleDeleteProject}
+                className='flex-1 py-2 bg-red-400 hover:bg-red-500 text-white font-black rounded-2xl transition-colors shadow-lg shadow-red-400/20'
+              >
+                Delete
               </button>
             </div>
           </div>
