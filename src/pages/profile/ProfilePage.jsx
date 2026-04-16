@@ -330,7 +330,7 @@ const ProfilePage = () => {
                       </div>
                     </div>
 
-                    <div className='space-y-2'>
+                    <div className='space-y-2 mt-2'>
                       <div className='flex items-center justify-between gap-1 px-1'>
                         <label className='text-[10px] font-bold uppercase tracking-widest text-lavender-grey/40'>
                           Email
