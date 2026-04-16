@@ -10,7 +10,7 @@ import {
   Hash,
   MessageSquare,
   NotebookPen,
-  Activity, // ← Added for the button
+  LoaderCircle, // ← Added for the button
 } from "lucide-react";
 import { SearchBar, Pagination } from "../../components/DataControls";
 import { useNavigate } from "react-router-dom";
@@ -100,9 +100,9 @@ const ChangelogPage = () => {
             {/* Cool Refresh Button with futuristic loading effect */}
             <button onClick={fetchLogs} disabled={loading}>
               {loading ? (
-                <Activity className='w-4 h-4 text-green-400 animate-spin' />
+                <LoaderCircle className='w-4 h-4 text-green-400 animate-spin' />
               ) : (
-                <Activity className='w-4 h-4 opacity-0' />
+                <LoaderCircle className='w-4 h-4 opacity-0' />
               )}
             </button>
           </div>

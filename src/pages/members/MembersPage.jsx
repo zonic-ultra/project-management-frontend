@@ -10,7 +10,7 @@ import {
   X,
   Mail,
   Calendar,
-  Activity,
+  LoaderCircle,
 } from "lucide-react";
 import { SearchBar, Pagination } from "../../components/DataControls";
 
@@ -126,9 +126,9 @@ const MembersPage = () => {
           >
             <div className='absolute inset-0 bg-gradient-to-r from-dusk-blue/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300' />
             {loading ? (
-              <Activity className='w-4 h-4 text-green-400 animate-spin' />
+              <LoaderCircle className='w-4 h-4 text-green-400 animate-spin' />
             ) : (
-              <Activity className='w-4 h-4 opacity-0' />
+              <LoaderCircle className='w-4 h-4 opacity-0' />
             )}
           </button>
         </div>

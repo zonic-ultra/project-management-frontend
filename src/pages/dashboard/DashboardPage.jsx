@@ -15,6 +15,7 @@ import {
   TrendingUp,
   Activity,
   Zap,
+  LoaderCircle,
 } from "lucide-react";
 
 const DashboardPage = () => {
@@ -184,10 +185,10 @@ const DashboardPage = () => {
           </div>
           <button onClick={fetchStats} disabled={loading}>
             {loading ? (
-              <Activity className='w-4 h-4 text-green-400 animate-spin' />
+              <LoaderCircle className='w-4 h-4 text-green-400 animate-spin' />
             ) : (
               <>
-                <Activity className='w-4 h-4 opacity-0' />
+                <LoaderCircle className='w-4 h-4 opacity-0' />
               </>
             )}
           </button>

@@ -18,7 +18,7 @@ import {
   Key,
   Eye,
   EyeOff,
-  Activity, // ← Added for refresh button
+  LoaderCircle, // ← Added for refresh button
 } from "lucide-react";
 
 const ProfilePage = () => {
@@ -175,10 +175,10 @@ const ProfilePage = () => {
           {/* Refresh Button - Only spinning Activity icon when loading */}
           <button onClick={fetchProfile} disabled={loading}>
             {loading ? (
-              <Activity className='w-4 h-4 text-green-400 animate-spin' />
+              <LoaderCircle className='w-4 h-4 text-green-400 animate-spin' />
             ) : (
               <>
-                <Activity className='w-4 h-4 opacity-0' />
+                <LoaderCircle className='w-4 h-4 opacity-0' />
               </>
             )}
           </button>

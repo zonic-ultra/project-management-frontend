@@ -8,7 +8,7 @@ import {
   Briefcase,
   CirclePlus,
   Eye,
-  Activity,
+  LoaderCircle,
 } from "lucide-react";
 import { SearchBar, Pagination } from "../../components/DataControls";
 
@@ -131,9 +131,9 @@ const ProjectPage = () => {
 
             <button className='ml-10' onClick={getProjects} disabled={loading}>
               {loading ? (
-                <Activity className='w-4 h-4 text-green-400 animate-spin' />
+                <LoaderCircle className='w-4 h-4 text-green-400 animate-spin' />
               ) : (
-                <Activity className='w-4 h-4 opacity-0' />
+                <LoaderCircle className='w-4 h-4 opacity-0' />
               )}
             </button>
           </div>
