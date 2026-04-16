@@ -175,7 +175,7 @@ const HomePage = () => {
                       </div>
 
                       {/* Value */}
-                      <h3 className='text-3xl font-display font-bold text-alabaster-grey mb-1 group-hover:scale-105 transition-transform duration-500'>
+                      <h3 className='text-xl font-display text-alabaster-grey mb-1 group-hover:scale-105 transition-transform duration-500'>
                         {loading ? "..." : stat.value}
                       </h3>
 
