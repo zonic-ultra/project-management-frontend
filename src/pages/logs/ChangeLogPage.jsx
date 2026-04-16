@@ -86,15 +86,15 @@ const ChangelogPage = () => {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredLogs.slice(indexOfFirstItem, indexOfLastItem);
 
-  // const formatDate = (dateString) => {
-  //   const date = new Date(dateString);
-  //   return date.toLocaleString("en-US", {
-  //     month: "short",
-  //     day: "numeric",
-  //     hour: "numeric",
-  //     minute: "2-digit",
-  //   });
-  // };
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleString("en-US", {
+      month: "short",
+      day: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
+    });
+  };
 
   return (
     <Layout>
@@ -157,14 +157,7 @@ const ChangelogPage = () => {
                       {log.newStatus}
                     </div>
                     <span className='text-[10px] text-lavender-grey/70'>
-                      {log.createdAt
-                        ? new Date(log.createdAt).toLocaleString("en-US", {
-                            month: "short",
-                            day: "numeric",
-                            hour: "numeric",
-                            minute: "2-digit",
-                          })
-                        : "Unknown Date"}
+                      {formatDate(log.createdAt)}
                     </span>
                   </div>
 
