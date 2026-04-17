@@ -20,7 +20,7 @@ const AddEditProjectPage = () => {
 
   const isEditing = Boolean(project_id);
 
-  // LOAD DATA (EDIT MODE ONLY)
+  // LOAD DATA
   useEffect(() => {
     if (!project_id) return;
     const loadProject = async () => {
@@ -71,7 +71,7 @@ const AddEditProjectPage = () => {
       )}
 
       <div className='max-w-2xl mx-auto space-y-8'>
-        {/* BACK BUTTON (UI SAME) */}
+        {/* BACK BUTTON */}
         <button
           onClick={() => navigate("/projects")}
           className='flex items-center gap-2 text-lavender-grey hover:text-dusk-blue transition-colors group'
@@ -80,12 +80,12 @@ const AddEditProjectPage = () => {
           Back to Projects
         </button>
 
-        {/* CARD (UI SAME) */}
+        {/* CARD */}
         <div className='p-8 rounded-3xl bg-prussian-blue/50 backdrop-blur-xl border border-lavender-grey/10 shadow-2xl relative overflow-hidden'>
           <div className='absolute -bottom-24 -left-24 w-48 h-48 bg-lavender-grey/5 rounded-full blur-3xl' />
 
           <div className='relative z-10'>
-            {/* HEADER (UI SAME) */}
+            {/* HEaDER */}
             <div className='flex items-center gap-4 mb-8'>
               <div className='p-3 rounded-xl bg-dusk-blue/10 text-dusk-blue'>
                 <Briefcase className='w-6 h-6' />
@@ -133,7 +133,7 @@ const AddEditProjectPage = () => {
                 />
               </div>
 
-              {/* BUTTON (UI SAME) */}
+              {/* BUTTON */}
               <button
                 type='submit'
                 className='w-full py-4 mt-4 bg-gradient-to-r from-dusk-blue to-lavender-grey text-white font-black rounded-xl shadow-lg hover:shadow-[0_0_30px_rgba(65,90,119,0.4)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 uppercase tracking-widest text-sm flex items-center justify-center gap-2'

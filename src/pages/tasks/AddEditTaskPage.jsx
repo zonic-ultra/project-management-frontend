@@ -160,19 +160,6 @@ const AddEditTaskPage = () => {
                   <label className='text-xs font-bold uppercase tracking-widest text-dusk-blue/60 ml-1'>
                     Project
                   </label>
-                  {/* <select
-                    value={project_id}
-                    onChange={(e) => setProjectId(e.target.value)}
-                    required
-                    className='w-full bg-ink-black/50 border border-lavender-grey/10 rounded-xl py-3 px-4 text-alabaster-grey focus:outline-none focus:border-dusk-blue/50 transition-all appearance-none cursor-pointer'
-                  >
-                    <option value=''>Select Initiative</option>
-                    {projects.map((p) => (
-                      <option key={p.id} value={p.id}>
-                        {p.project_name || p.name}
-                      </option>
-                    ))}
-                  </select> */}
                   <select
                     value={project_id}
                     onChange={(e) => setProjectId(e.target.value)} // keep as string for React
@@ -184,7 +171,7 @@ const AddEditTaskPage = () => {
                       <option key={p.project_id} value={p.project_id}>
                         {" "}
                         {/* value must be the numeric ID */}
-                        {p.project_name || p.name || `Project ${p.project_id}`}
+                        {p.project_name || `Project ${p.project_id}`}
                       </option>
                     ))}
                   </select>
