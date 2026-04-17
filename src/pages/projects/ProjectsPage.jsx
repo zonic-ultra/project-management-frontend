@@ -18,7 +18,7 @@ const ProjectPage = () => {
   const [message, setMessage] = useState("");
   const [selectedProject, setSelectedProject] = useState(null);
 
-  // ✅ DELETE MODAL STATES (ADDED)
+  // DELETE MODAL STATES
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedProjectForDelete, setSelectedProjectForDelete] =
     useState(null);
@@ -55,13 +55,13 @@ const ProjectPage = () => {
     getProjects();
   }, [getProjects]);
 
-  // ✅ OPEN DELETE MODAL
+  // OPEN DELETE MODAL
   const openDeleteModal = (project) => {
     setSelectedProjectForDelete(project);
     setShowDeleteModal(true);
   };
 
-  // ✅ CONFIRM DELETE
+  //  CONFIRM DELETE
   const handleDeleteProject = async () => {
     if (!selectedProjectForDelete) return;
 

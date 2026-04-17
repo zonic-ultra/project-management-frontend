@@ -15,7 +15,7 @@ import {
   User,
   Briefcase,
   CirclePlus,
-  LoaderCircle, // ← Added
+  LoaderCircle,
 } from "lucide-react";
 import { SearchBar, Pagination } from "../../components/DataControls";
 

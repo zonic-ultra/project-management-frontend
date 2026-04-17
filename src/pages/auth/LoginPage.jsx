@@ -22,8 +22,8 @@ const LoginPage = () => {
 
       const token = data.token || data.data?.token;
 
-      // FIXED: Extract role correctly from your backend response
-      let role = data.role || data.data?.role || data.data; // ← data.data is 'ADMIN'
+      // Extract role correctly from backend response
+      let role = data.role || data.data?.role || data.data; // data.data is 'ADMIN'
 
       if (!token) {
         setMessage("Login failed: No token received");

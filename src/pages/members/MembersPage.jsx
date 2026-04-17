@@ -22,7 +22,7 @@ const MembersPage = () => {
   const [selectedMember, setSelectedMember] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  // ✅ DELETE MODAL STATES (ADDED ONLY)
+  // DELETE MODAL STATES
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedMemberForDelete, setSelectedMemberForDelete] = useState(null);
 
@@ -53,7 +53,6 @@ const MembersPage = () => {
     setTimeout(() => setMessage(""), 4000);
   };
 
-  // ✅ DELETE FLOW (MODAL INSTEAD OF CONFIRM)
   const handleDelete = (member) => {
     setSelectedMemberForDelete(member);
     setShowDeleteModal(true);
