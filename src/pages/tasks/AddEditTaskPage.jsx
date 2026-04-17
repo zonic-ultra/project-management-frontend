@@ -21,8 +21,11 @@ const AddEditTaskPage = () => {
   const [taskStatus, setTaskStatus] = useState("TODO");
   const [projects, setProjects] = useState([]);
   const [members, setMembers] = useState([]);
-  const [message, setMessage] = useState("");
   const [isEditing, setIsEditing] = useState(false);
+
+  const [message, setMessage] = useState("");
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [progress, setProgress] = useState(100);
 
   const navigate = useNavigate();
 
@@ -51,7 +54,7 @@ const AddEditTaskPage = () => {
           }
         }
       } catch (error) {
-        showMessage("Failed to load task data: " + error);
+        showMessage("Failed to load task data: " + error, false);
       }
     };
     fetchData();
@@ -71,32 +74,80 @@ const AddEditTaskPage = () => {
     try {
       if (isEditing && id) {
         await ApiService.updateTask(id, taskData);
-        showMessage("Task updated successfully");
+        showMessage("Task updated successfully", true);
         setTimeout(() => navigate("/tasks"), 1500);
       } else {
         await ApiService.addTask(taskData);
-        showMessage("Task created successfully");
+        showMessage("Task created successfully", true);
         setTimeout(() => navigate("/tasks"), 1500);
       }
     } catch (error) {
       showMessage(
         error.response?.data?.message || "Failed to save task: " + error,
+        false,
       );
     }
   };
 
-  const showMessage = (msg) => {
+  const showMessage = (msg, success = false) => {
     setMessage(msg);
+    setIsSuccess(success);
+    setProgress(100);
+
+    // Start shrinking after a tiny delay
+    setTimeout(() => {
+      setProgress(0);
+    }, 50);
+
+    // Remove message after the bar finishes
     setTimeout(() => {
       setMessage("");
-    }, 4000);
+      setIsSuccess(false);
+      setProgress(100);
+    }, 5500); // ← Changed from 4300 to 5500ms (5.5 seconds)
   };
 
   return (
     <Layout>
       {message && (
-        <div className='fixed top-8 right-8 z-50 p-4 rounded-xl bg-dusk-blue/10 border border-dusk-blue/20 text-dusk-blue text-sm font-bold shadow-2xl backdrop-blur-xl animate-in fade-in slide-in-from-top-4'>
-          {message}
+        <div
+          className={`fixed left-1/2 -translate-x-1/2 z-[9999] 
+      w-[90%] max-w-md px-5 py-4 rounded-2xl text-sm  
+      shadow-2xl backdrop-blur-2xl overflow-hidden
+      ${
+        isSuccess
+          ? "bg-green-500/20 border-green-400/30 text-white"
+          : "bg-red-500/20 border-red-400/30 text-white"
+      }`}
+          style={{
+            // This is the key fix — adjust the number based on your navbar height
+            top: "70px", // ← Change this value
+            // Fallback for devices with notch/status bar
+            marginTop: "env(safe-area-inset-top, 0px)",
+          }}
+        >
+          <div className='flex items-start gap-3'>
+            <div className='text-2xl flex-shrink-0 mt-0.5'>
+              {isSuccess ? "✅" : "⚠️"}
+            </div>
+
+            <div className='flex-1'>
+              <p className='leading-tight'>{message}</p>
+
+              {/* Progress Bar */}
+              <div className='h-1 bg-white/30 rounded-full overflow-hidden mt-3'>
+                <div
+                  className={`h-full rounded-full transition-all ease-linear
+              ${isSuccess ? "bg-green-300" : "bg-red-300"}`}
+                  style={{
+                    width: `${progress}%`,
+                    opacity: progress > 5 ? 1 : 0,
+                    transitionDuration: progress === 100 ? "0ms" : "1600ms",
+                  }}
+                />
+              </div>
+            </div>
+          </div>
         </div>
       )}
 

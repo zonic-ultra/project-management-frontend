@@ -15,8 +15,11 @@ import { SearchBar, Pagination } from "../../components/DataControls";
 const ProjectPage = () => {
   const [projects, setProjects] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [message, setMessage] = useState("");
   const [selectedProject, setSelectedProject] = useState(null);
+
+  const [message, setMessage] = useState("");
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [progress, setProgress] = useState(100);
 
   // DELETE MODAL STATES
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -30,9 +33,22 @@ const ProjectPage = () => {
   const navigate = useNavigate();
   const isAdmin = ApiService.isAdmin();
 
-  const showMessage = (msg) => {
+  const showMessage = (msg, success = false) => {
     setMessage(msg);
-    setTimeout(() => setMessage(""), 4000);
+    setIsSuccess(success);
+    setProgress(100);
+
+    // Start shrinking after a tiny delay
+    setTimeout(() => {
+      setProgress(0);
+    }, 50);
+
+    // Remove message after the bar finishes (now slower)
+    setTimeout(() => {
+      setMessage("");
+      setIsSuccess(false);
+      setProgress(100);
+    }, 1000);
   };
 
   const getProjects = useCallback(async () => {
@@ -45,6 +61,7 @@ const ProjectPage = () => {
     } catch (error) {
       showMessage(
         error.response?.data?.message || "Error Getting Projects: " + error,
+        false,
       );
     } finally {
       setLoading(false);
@@ -68,12 +85,13 @@ const ProjectPage = () => {
     try {
       await ApiService.deleteProject(selectedProjectForDelete.project_id);
       getProjects();
-      showMessage("Project deleted successfully.");
+      showMessage("Project deleted successfully.", true);
       setShowDeleteModal(false);
       setSelectedProjectForDelete(null);
     } catch (error) {
       showMessage(
         error.response?.data?.message || "Failed to delete Project: " + error,
+        false,
       );
     }
   };
@@ -101,8 +119,44 @@ const ProjectPage = () => {
   return (
     <Layout>
       {message && (
-        <div className='fixed top-8 right-8 z-50 p-4 rounded-xl bg-dusk-blue/10 border border-dusk-blue/20 text-dusk-blue text-sm font-bold shadow-2xl backdrop-blur-xl'>
-          {message}
+        <div
+          className={`fixed left-1/2 -translate-x-1/2 z-[9999] 
+      w-[90%] max-w-md px-5 py-4 rounded-2xl text-sm  
+      shadow-2xl backdrop-blur-2xl overflow-hidden
+      ${
+        isSuccess
+          ? "bg-gray-500/20 border-green-400/30 text-white"
+          : "bg-red-500/20 border-red-400/30 text-white"
+      }`}
+          style={{
+            // This is the key fix — adjust the number based on your navbar height
+            top: "70px", // ← Change this value
+            // Fallback for devices with notch/status bar
+            marginTop: "env(safe-area-inset-top, 0px)",
+          }}
+        >
+          <div className='flex items-start gap-3'>
+            <div className='text-2xl flex-shrink-0 mt-0.5'>
+              {isSuccess ? "✅" : "⚠️"}
+            </div>
+
+            <div className='flex-1'>
+              <p className='leading-tight'>{message}</p>
+
+              {/* Progress Bar */}
+              <div className='h-1 bg-white/30 rounded-full overflow-hidden mt-3'>
+                <div
+                  className={`h-full rounded-full transition-all ease-linear
+              ${isSuccess ? "bg-green-300" : "bg-red-300"}`}
+                  style={{
+                    width: `${progress}%`,
+                    opacity: progress > 5 ? 1 : 0,
+                    transitionDuration: progress === 100 ? "0ms" : "1000ms",
+                  }}
+                />
+              </div>
+            </div>
+          </div>
         </div>
       )}
 

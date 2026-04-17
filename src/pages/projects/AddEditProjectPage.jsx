@@ -9,10 +9,25 @@ const AddEditProjectPage = () => {
   const { project_id } = useParams();
 
   const [message, setMessage] = useState("");
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [progress, setProgress] = useState(100); // 100% = full bar
 
-  const showMessage = (msg) => {
+  const showMessage = (msg, success = false) => {
     setMessage(msg);
-    setTimeout(() => setMessage(""), 4000);
+    setIsSuccess(success);
+    setProgress(100);
+
+    // Start shrinking after a tiny delay
+    setTimeout(() => {
+      setProgress(0);
+    }, 50);
+
+    // Remove message after the bar finishes (now slower)
+    setTimeout(() => {
+      setMessage("");
+      setIsSuccess(false);
+      setProgress(100);
+    }, 5500); // ← Changed from 4300 to 5500ms (5.5 seconds)
   };
 
   const [project_name, setProjectName] = useState("");
@@ -31,7 +46,7 @@ const AddEditProjectPage = () => {
         setProjectName(data?.project_name || "");
         setProjectDescription(data?.project_description || "");
       } catch (err) {
-        showMessage("Error loading project: " + err);
+        showMessage("Error loading project: " + err, false);
       }
     };
 
@@ -49,15 +64,15 @@ const AddEditProjectPage = () => {
     try {
       if (isEditing) {
         await ApiService.updateProject(project_id, projectData);
-        showMessage("Project updated successfully.");
+        showMessage("Project updated successfully.", true);
       } else {
         await ApiService.createProject(projectData);
-        showMessage("Project created successfully.");
+        showMessage("Project created successfully.", true);
       }
 
       setTimeout(() => navigate("/projects"), 1500);
     } catch (error) {
-      showMessage("Failed to save project: " + error);
+      showMessage("Failed to save project: " + error, false);
     }
   };
 
@@ -65,8 +80,44 @@ const AddEditProjectPage = () => {
     <Layout>
       {/* MESSAGE */}
       {message && (
-        <div className='fixed top-8 right-8 z-50 p-4 rounded-xl bg-dusk-blue/10 border border-dusk-blue/20 text-dusk-blue text-sm font-bold shadow-2xl backdrop-blur-xl'>
-          {message}
+        <div
+          className={`fixed left-1/2 -translate-x-1/2 z-[9999] 
+      w-[90%] max-w-md px-5 py-4 rounded-2xl text-sm  
+      shadow-2xl backdrop-blur-2xl overflow-hidden
+      ${
+        isSuccess
+          ? "bg-green-500/20 border-green-400/30 text-white"
+          : "bg-red-500/20 border-red-400/30 text-white"
+      }`}
+          style={{
+            // This is the key fix — adjust the number based on your navbar height
+            top: "70px", // ← Change this value
+            // Fallback for devices with notch/status bar
+            marginTop: "env(safe-area-inset-top, 0px)",
+          }}
+        >
+          <div className='flex items-start gap-3'>
+            <div className='text-2xl flex-shrink-0 mt-0.5'>
+              {isSuccess ? "✅" : "⚠️"}
+            </div>
+
+            <div className='flex-1'>
+              <p className='leading-tight'>{message}</p>
+
+              {/* Progress Bar */}
+              <div className='h-1 bg-white/30 rounded-full overflow-hidden mt-3'>
+                <div
+                  className={`h-full rounded-full transition-all ease-linear
+              ${isSuccess ? "bg-green-300" : "bg-red-300"}`}
+                  style={{
+                    width: `${progress}%`,
+                    opacity: progress > 5 ? 1 : 0,
+                    transitionDuration: progress === 100 ? "0ms" : "1600ms",
+                  }}
+                />
+              </div>
+            </div>
+          </div>
         </div>
       )}
 

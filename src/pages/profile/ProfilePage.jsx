@@ -183,7 +183,6 @@ const ProfilePage = () => {
             )}
           </button>
         </div>
-
         {/* Tabs Navigation */}
         <div className='overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide'>
           <div className='flex p-1 bg-prussian-blue/30 border border-lavender-grey/10 rounded-2xl w-max sm:w-fit min-w-full sm:min-w-0'>
@@ -207,8 +206,7 @@ const ProfilePage = () => {
             ))}
           </div>
         </div>
-
-        {/* Messages */}
+        Messages
         {(message || error) && (
           <div
             className={`p-4 rounded-2xl border backdrop-blur-xl text-sm font-bold ${
@@ -220,7 +218,6 @@ const ProfilePage = () => {
             {message || error}
           </div>
         )}
-
         {/* Tab Content */}
         <div className='animate-in fade-in slide-in-from-bottom-4 duration-500'>
           {activeTab === "overview" && (

@@ -25,9 +25,12 @@ const TasksPage = () => {
   const [tasks, setTasks] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("ALL");
-  const [message, setMessage] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false); //  Added for refresh button
+
+  const [message, setMessage] = useState("");
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [progress, setProgress] = useState(100);
 
   //View task
   const [viewSelectedTask, setViewSelectedTask] = useState(null);
@@ -60,9 +63,20 @@ const TasksPage = () => {
     getTasks();
   }, [getTasks]);
 
-  const showMessage = (msg) => {
+  const showMessage = (msg, success = false) => {
     setMessage(msg);
-    setTimeout(() => setMessage(""), 4000);
+    setIsSuccess(success);
+    setProgress(100);
+
+    setTimeout(() => {
+      setProgress(0);
+    }, 50);
+
+    setTimeout(() => {
+      setMessage("");
+      setIsSuccess(false);
+      setProgress(100);
+    }, 1000);
   };
 
   const openStatusModal = (task, value) => {
@@ -90,9 +104,12 @@ const TasksPage = () => {
       setSelectedTask(null);
       setNewStatus("");
       setRemarks("");
-      showMessage("Task status updated");
+      showMessage("Task status updated", true);
     } catch (error) {
-      showMessage(error.response?.data?.message || "Unable to update status");
+      showMessage(
+        error.response?.data?.message || "Unable to update status",
+        false,
+      );
     }
   };
 
@@ -103,9 +120,12 @@ const TasksPage = () => {
       setTasks((prev) => prev.filter((t) => t.id !== selectedTask.id));
       setShowDeleteModal(false);
       setSelectedTask(null);
-      showMessage("Task deleted successfully");
+      showMessage("Task deleted successfully", true);
     } catch (error) {
-      showMessage(error.response?.data?.message || "Unable to delete task");
+      showMessage(
+        error.response?.data?.message || "Unable to delete task",
+        false,
+      );
     }
   };
 
@@ -132,10 +152,47 @@ const TasksPage = () => {
   return (
     <Layout>
       {message && (
-        <div className='fixed top-8 right-8 z-50 p-4 rounded-xl bg-dusk-blue/10 border border-dusk-blue/20 text-dusk-blue text-sm font-bold shadow-2xl backdrop-blur-xl'>
-          {message}
+        <div
+          className={`fixed left-1/2 -translate-x-1/2 z-[9999] 
+      w-[90%] max-w-md px-5 py-4 rounded-2xl text-sm  
+      shadow-2xl backdrop-blur-2xl overflow-hidden
+      ${
+        isSuccess
+          ? "bg-gray-500/20 border-green-400/30 text-white"
+          : "bg-red-500/20 border-red-400/30 text-white"
+      }`}
+          style={{
+            // This is the key fix — adjust the number based on your navbar height
+            top: "70px", // ← Change this value
+            // Fallback for devices with notch/status bar
+            marginTop: "env(safe-area-inset-top, 0px)",
+          }}
+        >
+          <div className='flex items-start gap-3'>
+            <div className='text-2xl flex-shrink-0 mt-0.5'>
+              {isSuccess ? "✅" : "⚠️"}
+            </div>
+
+            <div className='flex-1'>
+              <p className='leading-tight'>{message}</p>
+
+              {/* Progress Bar */}
+              <div className='h-1 bg-white/30 rounded-full overflow-hidden mt-3'>
+                <div
+                  className={`h-full rounded-full transition-all ease-linear
+              ${isSuccess ? "bg-green-300" : "bg-red-300"}`}
+                  style={{
+                    width: `${progress}%`,
+                    opacity: progress > 5 ? 1 : 0,
+                    transitionDuration: progress === 100 ? "0ms" : "1000ms",
+                  }}
+                />
+              </div>
+            </div>
+          </div>
         </div>
       )}
+
       <div className='space-y-8'>
         <div className='flex flex-col md:flex-row md:items-center justify-between gap-4'>
           <div>

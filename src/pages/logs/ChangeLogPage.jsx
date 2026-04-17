@@ -18,11 +18,14 @@ import { useNavigate } from "react-router-dom";
 const ChangelogPage = () => {
   const [logs, setLogs] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [message, setMessage] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false); // ← Added for button state
   const itemsPerPage = 12;
   const navigate = useNavigate();
+
+  const [message, setMessage] = useState("");
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [progress, setProgress] = useState(100);
 
   const fetchLogs = useCallback(async () => {
     setLoading(true);
@@ -59,16 +62,27 @@ const ChangelogPage = () => {
           .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)),
       );
 
-      showMessage("Log deleted successfully");
+      showMessage("Log deleted successfully", true);
       navigate("/logs");
     } catch (error) {
-      showMessage("Failed to delete log: " + error);
+      showMessage("Failed to delete log: " + error, false);
     }
   };
 
-  const showMessage = (msg) => {
+  const showMessage = (msg, success = false) => {
     setMessage(msg);
-    setTimeout(() => setMessage(""), 4000);
+    setIsSuccess(success);
+    setProgress(100);
+
+    setTimeout(() => {
+      setProgress(0);
+    }, 50);
+
+    setTimeout(() => {
+      setMessage("");
+      setIsSuccess(false);
+      setProgress(100);
+    }, 1000);
   };
 
   const filteredLogs = logs.filter((log) => {
@@ -84,8 +98,44 @@ const ChangelogPage = () => {
   return (
     <Layout>
       {message && (
-        <div className='fixed top-8 right-8 z-50 p-4 rounded-xl bg-dusk-blue/10 border border-dusk-blue/20 text-dusk-blue text-sm font-bold shadow-2xl backdrop-blur-xl animate-in fade-in slide-in-from-top-4'>
-          {message}
+        <div
+          className={`fixed left-1/2 -translate-x-1/2 z-[9999] 
+      w-[90%] max-w-md px-5 py-4 rounded-2xl text-sm  
+      shadow-2xl backdrop-blur-2xl overflow-hidden
+      ${
+        isSuccess
+          ? "bg-gray-500/20 border-green-400/30 text-white"
+          : "bg-red-500/20 border-red-400/30 text-white"
+      }`}
+          style={{
+            // This is the key fix — adjust the number based on your navbar height
+            top: "70px", // ← Change this value
+            // Fallback for devices with notch/status bar
+            marginTop: "env(safe-area-inset-top, 0px)",
+          }}
+        >
+          <div className='flex items-start gap-3'>
+            <div className='text-2xl flex-shrink-0 mt-0.5'>
+              {isSuccess ? "✅" : "⚠️"}
+            </div>
+
+            <div className='flex-1'>
+              <p className='leading-tight'>{message}</p>
+
+              {/* Progress Bar */}
+              <div className='h-1 bg-white/30 rounded-full overflow-hidden mt-3'>
+                <div
+                  className={`h-full rounded-full transition-all ease-linear
+              ${isSuccess ? "bg-green-300" : "bg-red-300"}`}
+                  style={{
+                    width: `${progress}%`,
+                    opacity: progress > 5 ? 1 : 0,
+                    transitionDuration: progress === 100 ? "0ms" : "1000ms",
+                  }}
+                />
+              </div>
+            </div>
+          </div>
         </div>
       )}
 
