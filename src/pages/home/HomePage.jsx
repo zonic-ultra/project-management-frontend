@@ -180,7 +180,7 @@ const HomePage = () => {
                       </h3>
 
                       {/* Label */}
-                      <p className='text-[10px] font-bold uppercase tracking-[0.2em] text-lavender-grey/60 group-hover:text-lavender-grey/80 transition-colors'>
+                      <p className='text-[10px] font-bold text-center uppercase tracking-[0.2em] text-lavender-grey/60 group-hover:text-lavender-grey/80 transition-colors'>
                         {stat.label}
                       </p>
                     </motion.div>
