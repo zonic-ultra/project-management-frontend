@@ -16,6 +16,8 @@ import {
   Briefcase,
   CirclePlus,
   LoaderCircle,
+  Eye,
+  NotebookPen,
 } from "lucide-react";
 import { SearchBar, Pagination } from "../../components/DataControls";
 
@@ -25,7 +27,10 @@ const TasksPage = () => {
   const [statusFilter, setStatusFilter] = useState("ALL");
   const [message, setMessage] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [loading, setLoading] = useState(false); // ← Added for refresh button
+  const [loading, setLoading] = useState(false); //  Added for refresh button
+
+  //View task
+  const [viewSelectedTask, setViewSelectedTask] = useState(null);
 
   // Modal states
   const [showStatusModal, setShowStatusModal] = useState(false);
@@ -131,7 +136,6 @@ const TasksPage = () => {
           {message}
         </div>
       )}
-
       <div className='space-y-8'>
         <div className='flex flex-col md:flex-row md:items-center justify-between gap-4'>
           <div>
@@ -279,6 +283,12 @@ const TasksPage = () => {
                     </select>
 
                     <div className='flex items-center gap-2'>
+                      <button
+                        onClick={() => setViewSelectedTask(task)}
+                        className='p-2 text-lavender-grey/45 hover:text-blue-400 hover:bg-blue-400/10 rounded-lg transition-all'
+                      >
+                        <Eye className='h-4 w-4' />
+                      </button>
                       {isAdmin && (
                         <button
                           onClick={() => navigate(`/tasks/update/${task.id}`)}
@@ -322,6 +332,57 @@ const TasksPage = () => {
         />
       </div>
 
+      {viewSelectedTask && (
+        <div className='fixed inset-0 z-[100] flex items-center justify-center p-4 overflow-y-auto'>
+          {/* Backdrop */}
+          <div
+            className='absolute inset-0 bg-ink-black/80 backdrop-blur-md'
+            onClick={() => setViewSelectedTask(null)}
+          />
+
+          {/* Modal - Now properly centered */}
+          <div className='relative w-full max-w-lg mx-auto'>
+            <div className='p-8 rounded-3xl bg-prussian-blue border border-dusk-blue/20 shadow-[0_0_50px_rgba(65,90,119,0.1)] animate-in zoom-in-95 duration-300'>
+              {/* Decorative blur element */}
+              <div className='absolute -top-24 -right-24 w-48 h-48 bg-dusk-blue/5 rounded-full blur-3xl pointer-events-none' />
+
+              <div className='relative z-10'>
+                <div className='flex items-center gap-4 mb-6'>
+                  <div className='w-12 h-12 rounded-2xl bg-dusk-blue/10 flex items-center justify-center border border-dusk-blue/20'>
+                    <NotebookPen className='w-6 h-6 text-dusk-blue' />
+                  </div>
+                  <div>
+                    <h2 className='text-xl font-bold bg-gradient-to-r from-violet-400 via-fuchsia-400 to-pink-400 bg-clip-text text-transparent'>
+                      {viewSelectedTask.task_name}
+                    </h2>
+                    <p className='text-[10px] font-black uppercase tracking-[0.2em] text-dusk-blue'>
+                      Task Overview
+                    </p>
+                  </div>
+                </div>
+
+                <div className='space-y-6'>
+                  <div className='p-6 rounded-2xl bg-ink-black/50 border border-lavender-grey/10'>
+                    <h4 className='text-[10px] font-black uppercase tracking-widest text-lavender-grey/30 mb-3'>
+                      Strategic contents
+                    </h4>
+                    <p className='text-lavender-grey text-sm leading-relaxed'>
+                      {viewSelectedTask.contents || "No content provided"}
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => setViewSelectedTask(null)}
+                  className='w-full mt-8 py-4 bg-dusk-blue/10 text-dusk-blue font-black rounded-xl hover:bg-dusk-blue/20 transition-all uppercase tracking-[0.2em] text-[10px] border border-dusk-blue/20 active:scale-[0.98]'
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       {/* STATUS MODAL */}
       {showStatusModal && selectedTask && (
         <div className='fixed inset-0 z-50 flex items-center justify-center p-4 bg-ink-black/80 backdrop-blur-sm'>
@@ -377,7 +438,6 @@ const TasksPage = () => {
           </div>
         </div>
       )}
-
       {/* DELETE MODAL */}
       {showDeleteModal && selectedTask && (
         <div className='fixed inset-0 z-50 flex items-center justify-center p-4 bg-ink-black/80 backdrop-blur-sm'>

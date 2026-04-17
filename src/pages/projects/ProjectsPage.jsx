@@ -188,7 +188,7 @@ const ProjectPage = () => {
                         <Edit2 className='h-4 w-4' />
                       </button>
 
-                      {/* ✅ OPEN MODAL INSTEAD OF DIRECT DELETE */}
+                      {/* OPEN MODAL INSTEAD OF DIRECT DELETE */}
                       <button
                         className='p-2 text-lavender-grey/45 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-all'
                         onClick={() => openDeleteModal(project)}
@@ -266,7 +266,7 @@ const ProjectPage = () => {
         </div>
       )}
 
-      {/* ✅ DELETE MODAL (NEW) */}
+      {/* DELETE MODAL */}
       {showDeleteModal && selectedProjectForDelete && (
         <div className='fixed inset-0 z-[150] flex items-center justify-center p-4 bg-ink-black/80 backdrop-blur-sm'>
           <div className='w-full max-w-sm p-6 rounded-3xl bg-prussian-blue border border-red-400/10 shadow-2xl text-center'>
