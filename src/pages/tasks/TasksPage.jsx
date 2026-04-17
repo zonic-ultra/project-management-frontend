@@ -285,7 +285,7 @@ const TasksPage = () => {
                     <div className='flex items-center gap-2'>
                       <button
                         onClick={() => setViewSelectedTask(task)}
-                        className='p-2 text-lavender-grey/45 hover:text-blue-400 hover:bg-blue-400/10 rounded-lg transition-all'
+                        className='p-2 text-lavender-grey/20 hover:text-blue-400 hover:bg-blue-400/10 rounded-lg transition-all'
                       >
                         <Eye className='h-4 w-4' />
                       </button>

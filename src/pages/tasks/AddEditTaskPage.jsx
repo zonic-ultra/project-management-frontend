@@ -9,7 +9,7 @@ import React, { useState, useEffect } from "react";
 import Layout from "../../components/Layout";
 import ApiService from "../../service/ApiService";
 import { useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft, Save, Shield } from "lucide-react";
+import { ArrowLeft, NotebookPen, Save } from "lucide-react";
 
 const AddEditTaskPage = () => {
   const { id } = useParams();
@@ -115,7 +115,7 @@ const AddEditTaskPage = () => {
           <div className='relative z-10'>
             <div className='flex items-center gap-4 mb-8'>
               <div className='p-3 rounded-xl bg-dusk-blue/10 text-dusk-blue'>
-                <Shield className='w-6 h-6' />
+                <NotebookPen className='w-6 h-6' />
               </div>
               <div>
                 <h1 className='text-2xl font-black text-alabaster-grey tracking-tight'>
