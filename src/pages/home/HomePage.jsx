@@ -131,8 +131,9 @@ const HomePage = () => {
               </p>
 
               {/* Stats Section with Rotating Light Effect */}
+              {/* Stats Section with Rotating Light Effect */}
               <div className='max-w-4xl mx-auto mt-16 px-4'>
-                <div className='grid grid-cols-3 gap-4'>
+                <div className='flex flex-row justify-center gap-6 md:gap-8'>
                   {stats.map((stat, idx) => (
                     <motion.div
                       key={idx}
@@ -140,10 +141,10 @@ const HomePage = () => {
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
                       transition={{ delay: idx * 0.08 }}
-                      className='p-6 text-center group hover:bg-prussian-blue/10 transition-all relative overflow-hidden rounded-2xl'
+                      className='flex-1 max-w-[180px] p-6 text-center group hover:bg-prussian-blue/10 transition-all relative overflow-hidden rounded-2xl flex flex-col items-center'
                     >
                       {/* Icon Container */}
-                      <div className='flex justify-center mb-5'>
+                      <div className='flex justify-center mb-6'>
                         <div className='relative w-11 h-11 flex items-center justify-center'>
                           {/* Spinning Borders */}
                           <motion.div
@@ -180,7 +181,7 @@ const HomePage = () => {
                       </h3>
 
                       {/* Label */}
-                      <p className='text-[10px] font-bold text-center uppercase tracking-[0.2em] text-lavender-grey/60 group-hover:text-lavender-grey/80 transition-colors'>
+                      <p className='text-[10px] font-bold uppercase tracking-[0.2em] text-lavender-grey/60 group-hover:text-lavender-grey/80 transition-colors'>
                         {stat.label}
                       </p>
                     </motion.div>
