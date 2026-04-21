@@ -48,9 +48,6 @@ const Register = () => {
 
           <div className='relative z-10'>
             <div className='flex flex-col items-center mb-8'>
-              <div className='w-16 h-16 rounded-2xl bg-gradient-to-br from-dusk-blue to-lavender-grey flex items-center justify-center mb-4 shadow-[0_0_30px_rgba(65,90,119,0.3)]'>
-                <Shield className='w-8 h-8 text-white' />
-              </div>
               <h1 className='text-3xl font-black text-alabaster-grey tracking-tight'>
                 Register Identity
               </h1>
@@ -133,7 +130,7 @@ const Register = () => {
 
             <div className='mt-8 text-center'>
               <p className='text-lavender-grey/30 text-sm'>
-                Already have an identity?{" "}
+                Already have an account?{" "}
                 <Link
                   to='/login'
                   className='text-dusk-blue font-bold hover:underline'
