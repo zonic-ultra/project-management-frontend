@@ -45,7 +45,6 @@ const Register = () => {
       <div className='min-h-[80vh] flex items-center justify-center'>
         <div className='w-full max-w-md p-8 rounded-3xl bg-prussian-blue/50 backdrop-blur-xl border border-lavender-grey/10 shadow-2xl relative overflow-hidden group'>
           <div className='absolute -bottom-24 -left-24 w-48 h-48 bg-lavender-grey/10 rounded-full blur-3xl group-hover:bg-lavender-grey/20 transition-colors duration-500' />
-
           <div className='relative z-10'>
             <div className='flex flex-col items-center mb-8'>
               <h1 className='text-3xl font-black text-alabaster-grey tracking-tight'>
