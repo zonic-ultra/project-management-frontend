@@ -9,7 +9,7 @@ import React, { useState } from "react";
 import Layout from "../../components/Layout";
 import ApiService from "../../service/ApiService";
 import { useNavigate, Link } from "react-router-dom";
-import { Shield, Lock, User } from "lucide-react";
+import { Lock, User } from "lucide-react";
 
 const Register = () => {
   const [name, setName] = useState("");
