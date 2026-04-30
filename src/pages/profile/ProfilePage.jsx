@@ -206,7 +206,7 @@ const ProfilePage = () => {
             ))}
           </div>
         </div>
-        Messages
+        {/* Messages */}
         {(message || error) && (
           <div
             className={`p-4 rounded-2xl border backdrop-blur-xl text-sm font-bold ${
